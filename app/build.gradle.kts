@@ -2,10 +2,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.compose.kmm"
+    namespace = "com.compose.kmplibs"
     compileSdk = 34
     buildToolsVersion = "34.0.0"
 
@@ -49,6 +50,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    // KSP - To use generated sources
+    sourceSets["main"].java.srcDirs("build/generated/ksp/main/kotlin")
 }
 
 dependencies {
@@ -64,6 +68,15 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
+
+    //koin
+    implementation(platform(libs.koin.bom))
+    implementation("io.insert-koin:koin-android")
+    testImplementation("io.insert-koin:koin-test")
+    testImplementation("io.insert-koin:koin-test-junit4")
+    //koin Anotations
+    implementation(platform(libs.koin.anotations.bom))
+    ksp(libs.koin.ksp)
 
     testImplementation(libs.junit)
 

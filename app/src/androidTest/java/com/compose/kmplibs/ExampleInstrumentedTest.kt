@@ -1,4 +1,4 @@
-package com.compose.kmm
+package com.compose.kmplibs
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

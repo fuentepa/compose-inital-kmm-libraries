@@ -1,4 +1,4 @@
-package com.compose.kmm.ui.theme
+package com.compose.kmplibs.ui.theme
 
 import android.app.Activity
 import android.os.Build

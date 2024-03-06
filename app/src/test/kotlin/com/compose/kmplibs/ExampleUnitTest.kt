@@ -1,4 +1,4 @@
-package com.compose.kmm
+package com.compose.kmplibs
 
 import org.junit.Test
 
