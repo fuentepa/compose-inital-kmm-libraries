@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation( project(":data"))
+    implementation(libs.io.arrow)
 }

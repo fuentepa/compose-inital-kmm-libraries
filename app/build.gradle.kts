@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.ktorfit)
 }
 
 android {
@@ -52,7 +53,21 @@ android {
     }
 
     // KSP - To use generated sources
-    sourceSets["main"].java.srcDirs("build/generated/ksp/main/kotlin")
+    //sourceSets["main"].java.srcDirs("build/generated/ksp/main/kotlin")
+    sourceSets.forEach {
+        it.java.srcDirs.plusElement("build/generated/ksp/${it.name}/kotlin")
+    }
+
+    //KSP para multiples variantes
+    /*applicationVariants.all {
+        sourceSets.forEach {
+            it.javaDirectories.plus("build/generated/ksp/${it.name}/kotlin")
+        }
+    }*/
+
+    ksp {
+        arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
+    }
 }
 
 dependencies {
@@ -69,14 +84,26 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.io.arrow)
+
     //koin
     implementation(platform(libs.koin.bom))
-    implementation("io.insert-koin:koin-android")
-    testImplementation("io.insert-koin:koin-test")
-    testImplementation("io.insert-koin:koin-test-junit4")
+    implementation(libs.koin.android) //o core si es kotlin solo
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit4)
     //koin Anotations
     implementation(platform(libs.koin.anotations.bom))
     ksp(libs.koin.ksp)
+
+    //Ktorfit
+    implementation(libs.ktorfit.lib)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    ksp(libs.ktorfit.ksp)
+
+    //Datastore
+    implementation(libs.android.datastore.preferences)
 
     testImplementation(libs.junit)
 

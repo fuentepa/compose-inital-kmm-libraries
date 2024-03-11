@@ -1,8 +1,14 @@
 plugins {
     id("kotlin")
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.ksp)
 }
 
+
 dependencies {
+    implementation(libs.ktorfit.lib)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.io.arrow)
 
 }
