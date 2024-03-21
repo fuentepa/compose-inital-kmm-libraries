@@ -1,4 +1,4 @@
-package com.compose.kmplibs.data.features.preferences
+package com.compose.kmplibs.data.datasources.features.preferences
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

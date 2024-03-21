@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "compose-inital-kmm-libraries"
+rootProject.name = "compose-initial-kmm-libraries"
 include(":app")
 include(":data")
 include(":usecases")

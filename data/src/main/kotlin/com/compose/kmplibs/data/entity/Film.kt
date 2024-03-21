@@ -1,6 +1,6 @@
-package com.compose.data.entity
+package com.compose.kmplibs.data.entity
 
-import com.compose.data.remote.FilmEntity
+import com.compose.kmplibs.data.remote.FilmEntity
 import kotlinx.serialization.Serializable
 
 @Serializable

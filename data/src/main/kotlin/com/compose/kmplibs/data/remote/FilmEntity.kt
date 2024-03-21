@@ -1,4 +1,4 @@
-package com.compose.data.remote
+package com.compose.kmplibs.data.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,4 +1,4 @@
-package com.compose.data.datasources.features.preferences
+package com.compose.kmplibs.data.datasources.features.preferences
 
 import kotlinx.coroutines.flow.Flow
 

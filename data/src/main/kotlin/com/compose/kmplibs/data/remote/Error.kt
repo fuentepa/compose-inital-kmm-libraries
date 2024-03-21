@@ -1,4 +1,4 @@
-package com.compose.data.remote
+package com.compose.kmplibs.data.remote
 
 import arrow.core.Either
 import arrow.core.left

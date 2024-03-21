@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -12,7 +14,7 @@ android {
     buildToolsVersion = "34.0.0"
 
     defaultConfig {
-        applicationId = "com.compose.kmm"
+        applicationId = "com.compose.kmplibs"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
@@ -34,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -52,21 +54,9 @@ android {
         }
     }
 
-    // KSP - To use generated sources
-    //sourceSets["main"].java.srcDirs("build/generated/ksp/main/kotlin")
-    sourceSets.forEach {
-        it.java.srcDirs.plusElement("build/generated/ksp/${it.name}/kotlin")
-    }
-
-    //KSP para multiples variantes
-    /*applicationVariants.all {
-        sourceSets.forEach {
-            it.javaDirectories.plus("build/generated/ksp/${it.name}/kotlin")
-        }
-    }*/
-
     ksp {
         arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
+        arg("KOIN_DEFAULT_MODULE","true")
     }
 }
 
@@ -78,6 +68,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -88,11 +79,14 @@ dependencies {
 
     //koin
     implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android) //o core si es kotlin solo
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
     //koin Anotations
-    implementation(platform(libs.koin.anotations.bom))
+    implementation(platform(libs.koin.annotations.bom))
+    implementation(libs.koin.annotations)
     ksp(libs.koin.ksp)
 
     //Ktorfit
@@ -100,7 +94,9 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
     ksp(libs.ktorfit.ksp)
+
 
     //Datastore
     implementation(libs.android.datastore.preferences)

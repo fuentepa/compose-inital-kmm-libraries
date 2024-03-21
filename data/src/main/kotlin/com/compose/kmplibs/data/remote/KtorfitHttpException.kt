@@ -1,4 +1,4 @@
-package com.compose.data.remote
+package com.compose.kmplibs.data.remote
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.Response
@@ -7,16 +7,18 @@ import de.jensklingenberg.ktorfit.internal.TypeData
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
+import org.koin.core.annotation.Factory
 
 class KtorfitHttpException(  //for success responses with http error code inside
     @Transient val response: HttpResponse,
     val bodyText: String,
 ) : RuntimeException() {
     override val message: String
-        get() = "HTTP " + response.status.value + " " + bodyText
+        get() = "HTTP ${response.status.value}: $bodyText"
 }
 
- class UnsuccessResponseConverterFactory : Converter.Factory {
+@Factory
+class UnsuccessResponseConverterFactory : Converter.Factory {
 
     class UnsuccessResponseSuspendConverter(
         val typeData: TypeData,
