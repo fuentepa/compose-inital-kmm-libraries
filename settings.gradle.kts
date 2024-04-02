@@ -22,5 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "compose-initial-kmm-libraries"
 include(":app")
-include(":data")
 include(":usecases")
+include(":data")

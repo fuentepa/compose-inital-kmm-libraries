@@ -97,6 +97,8 @@ dependencies {
     implementation(libs.ktor.client.logging)
     ksp(libs.ktorfit.ksp)
 
+    implementation(libs.coil)
+
 
     //Datastore
     implementation(libs.android.datastore.preferences)

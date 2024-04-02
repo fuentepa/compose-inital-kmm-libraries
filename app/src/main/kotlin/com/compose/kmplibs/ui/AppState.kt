@@ -18,7 +18,7 @@ fun rememberAppState(
 }
 class AppState(
     val drawerState: DrawerState,
-    private val coroutineScope: CoroutineScope,
+    val coroutineScope: CoroutineScope,
 ) {
 
     fun onMenuClick() {
