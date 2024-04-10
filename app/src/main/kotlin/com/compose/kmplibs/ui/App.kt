@@ -58,6 +58,7 @@ fun App(appState: AppState = rememberAppState()) {
                         FilmsScreen(onClick = {
                             //esto es para probar que el click funciona, realmente aqui seria una navegacion
                             appState.coroutineScope.launch {
+                                snackbarHostState.currentSnackbarData?.dismiss()
                                 snackbarHostState.showSnackbar(it.title)
                             }
                         })
