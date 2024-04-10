@@ -7,7 +7,7 @@ import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Single
 
 
-fun interface GetAllFilmsUseCase {
+interface GetAllFilmsUseCase {
     suspend operator fun invoke(): Result<List<Film>>
 }
 
