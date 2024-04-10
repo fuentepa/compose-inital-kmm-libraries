@@ -2,6 +2,7 @@ package com.compose.kmplibs.di
 
 import android.util.Log
 import com.compose.kmplibs.data.remote.StarWarsApiService
+import com.compose.kmplibs.data.remote.TMDBApiService
 import com.compose.kmplibs.data.remote.UnsuccessResponseConverterFactory
 import com.compose.kmplibs.data.repository.StarWarsRepository
 import com.compose.kmplibs.data.repository.StarWarsRepositoryImpl
@@ -38,7 +39,7 @@ val appModule = module {
     factory { UnsuccessResponseConverterFactory() }
     single(named("StarWarsApi")) {
         ktorfit {
-            baseUrl(StarWarsApiService.API_URL)
+            baseUrl(TMDBApiService.API_URL)
 
             httpClient(HttpClient {
                 defaultRequest {
@@ -46,6 +47,7 @@ val appModule = module {
                         HttpHeaders.Accept to "application/json"
                         HttpHeaders.ContentType to "application/json"
                     }
+                    // TODO Token en BuildConfig?
                     //bearerAuth( "el token")  //esto seria el uso basico de token, si se quiere configurar mas cosas se hace con io.ktor:ktor-client-auth plugin
                 }
 

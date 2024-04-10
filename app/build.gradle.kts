@@ -82,7 +82,7 @@ android {
             buildConfigField(
                 "String",
                 "ACCESS_TOKEN",
-                "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU"
+                "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU\""
             )
         }
         create("pro") {
@@ -97,7 +97,7 @@ android {
             buildConfigField(
                 "String",
                 "ACCESS_TOKEN",
-                "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU"
+                "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU\""
             )
         }
     }
