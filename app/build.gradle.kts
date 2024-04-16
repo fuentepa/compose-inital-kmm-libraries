@@ -1,3 +1,5 @@
+import java.io.FileInputStream
+import java.util.Properties
 
 
 plugins {
@@ -24,17 +26,82 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        register("development") {
+            val keystorePropertiesFile = file("../keys/keystoreDev.properties")
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+            keyAlias = keystoreProperties["keyAliasDev"] as String
+            keyPassword = keystoreProperties["keyPasswordDev"] as String
+            storeFile = file(keystoreProperties["storeFileDev"] as String)
+            storePassword = keystoreProperties["storePasswordDev"] as String
+        }
+        register("release") {
+            // TODO: Uncomment these lines and set up your release keystore
+//            val keystorePropertiesFile = file("../local.properties")
+
+//            keyAlias = keystoreProperties["keyAliasRel"] as String
+//            keyPassword = keystoreProperties["keyPasswordRel"] as String
+//            storeFile = file(keystoreProperties["storeFileRel"] as String)
+//            storePassword = keystoreProperties["storePasswordRel"] as String
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
             isDebuggable = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
     }
+
+    flavorDimensions += listOf("environment")
+    productFlavors {
+        val privateApiKeyPropertiesFile = file("../local.properties")
+        val privateApiKeyProperties = Properties()
+        privateApiKeyProperties.load(FileInputStream(privateApiKeyPropertiesFile))
+
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-DEV"
+            signingConfig = signingConfigs.getByName("development")
+
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "API_KEY", "\"b48053648cfc700c69cd0e280943fd32\"")
+            // Uncomment this line to secure project's private_api_key
+            // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")
+            buildConfigField(
+                "String",
+                "ACCESS_TOKEN",
+                "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU\""
+            )
+        }
+        create("pro") {
+            dimension = "environment"
+            signingConfig = signingConfigs.getByName("release")
+
+            // Redefine with production values. If they're the same, include this field into defaultConfig section.
+            buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com:443/v1/public/\"")
+            buildConfigField("String", "API_KEY", "\"ff1bbafd775a6d0209d677f348c22d6b\"")
+            // Uncomment this line to secure project's private_api_key
+            // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")
+            buildConfigField(
+                "String",
+                "ACCESS_TOKEN",
+                "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDgwNTM2NDhjZmM3MDBjNjljZDBlMjgwOTQzZmQzMiIsInN1YiI6IjY2MTY2YzU4MjQyZjk0MDE3ZGM0Yjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rxwpXcO-JxrRIf7UDzl1jRkVzyjsY8h-9neWttDrNTU\""
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -44,6 +111,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.10"
@@ -55,14 +123,17 @@ android {
     }
 
     ksp {
-        arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
-        arg("KOIN_DEFAULT_MODULE","true")
+        arg(
+            "KOIN_CONGIG_CHECK",
+            "true"
+        )  //para chequear si nos hemos dejado algo sin configurar de koin
+        arg("KOIN_DEFAULT_MODULE", "true")
     }
 }
 
 dependencies {
-    implementation( project(":data"))
-    implementation( project(":usecases"))
+    implementation(project(":data"))
+    implementation(project(":usecases"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
