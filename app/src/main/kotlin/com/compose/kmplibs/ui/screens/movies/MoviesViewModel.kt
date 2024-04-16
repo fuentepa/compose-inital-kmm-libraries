@@ -2,10 +2,7 @@ package com.compose.kmplibs.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.compose.kmplibs.data.entity.Film
 import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.usecases.GetAllFilmsUseCase
-import com.compose.kmplibs.usecases.GetMovieDetailsUseCase
 import com.compose.kmplibs.usecases.GetTopRatedMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

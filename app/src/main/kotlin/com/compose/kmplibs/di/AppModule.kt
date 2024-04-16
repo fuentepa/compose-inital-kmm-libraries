@@ -1,12 +1,12 @@
 package com.compose.kmplibs.di
 
 import android.util.Log
+import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.data.remote.TMDBApiService
 import com.compose.kmplibs.data.remote.UnsuccessResponseConverterFactory
 import com.compose.kmplibs.data.repository.MoviesRepository
 import com.compose.kmplibs.data.repository.MoviesRepositoryImpl
-import com.compose.kmplibs.ui.screens.films.FilmsViewModel
-import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailsViewModel
+import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailViewModel
 import com.compose.kmplibs.ui.screens.movies.MoviesViewModel
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.builtin.CallConverterFactory
@@ -29,9 +29,8 @@ import org.koin.dsl.module
 
 val appModule = module {
     // TODO
-    viewModel { FilmsViewModel(get()) }
     viewModel { MoviesViewModel(get()) }
-    viewModel { MovieDetailsViewModel(get()) }
+    viewModel { MovieDetailViewModel(get()) }
 
     factory<MoviesRepository> { MoviesRepositoryImpl(get()) }
 
@@ -40,7 +39,7 @@ val appModule = module {
     factory { UnsuccessResponseConverterFactory() }
     single(named("TMDBApi")) {
         ktorfit {
-            baseUrl(TMDBApiService.API_URL)
+            baseUrl(BuildConfig.BASE_URL)
 
             httpClient(HttpClient {
                 defaultRequest {

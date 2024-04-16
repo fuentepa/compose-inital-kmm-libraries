@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
-import com.compose.kmplibs.ui.screens.films.FilmsScreen
 import com.compose.kmplibs.ui.theme.ComposeinitalkmmlibrariesTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.KoinAndroidContext
@@ -55,13 +54,7 @@ fun App(appState: AppState = rememberAppState()) {
                     }
                 ) { padding ->
                     Box(modifier = Modifier.padding(padding)) {
-                        FilmsScreen(onClick = {
-                            //esto es para probar que el click funciona, realmente aqui seria una navegacion
-                            appState.coroutineScope.launch {
-                                snackbarHostState.currentSnackbarData?.dismiss()
-                                snackbarHostState.showSnackbar(it.title)
-                            }
-                        })
+                        //TODO: MoviesScreen
                     }
                 }
             }
