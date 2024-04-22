@@ -12,6 +12,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
+import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 import com.compose.kmplibs.ui.theme.ComposeinitalkmmlibrariesTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.KoinAndroidContext
@@ -54,7 +56,15 @@ fun App(appState: AppState = rememberAppState()) {
                     }
                 ) { padding ->
                     Box(modifier = Modifier.padding(padding)) {
-                        //TODO: MoviesScreen
+                        MoviesScreen(onClick = {
+                            //esto es para probar que el click funciona, realmente aqui seria una navegacion
+                            LaunchedEffect(key1 = null) {
+                                appState.coroutineScope.launch {
+                                    snackbarHostState.showSnackbar(it.title)
+                                }
+                            }
+                        })
+
                     }
                 }
             }

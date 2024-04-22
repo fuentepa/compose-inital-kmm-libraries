@@ -18,6 +18,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.bearerAuth
 import io.ktor.http.HttpHeaders
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
@@ -48,7 +49,7 @@ val appModule = module {
                         HttpHeaders.ContentType to "application/json"
                     }
                     // TODO Token en BuildConfig?
-                    //bearerAuth( "el token")  //esto seria el uso basico de token, si se quiere configurar mas cosas se hace con io.ktor:ktor-client-auth plugin
+                    bearerAuth( BuildConfig.ACCESS_TOKEN)  //esto seria el uso basico de token, si se quiere configurar mas cosas se hace con io.ktor:ktor-client-auth plugin
                 }
 
                 install(Logging) {
