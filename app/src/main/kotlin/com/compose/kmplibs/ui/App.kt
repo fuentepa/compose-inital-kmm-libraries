@@ -22,16 +22,13 @@ import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 import com.compose.kmplibs.ui.theme.ComposeinitalkmmlibrariesTheme
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.KoinAndroidContext
-import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.compose.KoinContext
 
 
-@OptIn(KoinExperimentalAPI::class)
 @Preview
 @Composable
 fun App(appState: AppState = rememberAppState()) {
-    KoinAndroidContext {
+    KoinContext {
         AppScreen {
             ModalNavigationDrawer(
                 drawerState = appState.drawerState,

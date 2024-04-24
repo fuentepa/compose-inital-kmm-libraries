@@ -33,7 +33,7 @@ val appModule = module {
     viewModel { MoviesViewModel(get()) }
     viewModel { MovieDetailViewModel(get()) }
 
-    factory<MoviesRepository> { MoviesRepositoryImpl(get()) }
+    single<MoviesRepository> { MoviesRepositoryImpl(get()) }
 
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
     single { CallConverterFactory() }
