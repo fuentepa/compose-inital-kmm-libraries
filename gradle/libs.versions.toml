@@ -17,6 +17,7 @@ ktorfit = "1.14.0"
 ktor = "2.3.10"
 datastore-version = "1.1.0"
 coil = "2.6.0"
+voyagerVersion = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +63,9 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+
+voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyagerVersion" }
+voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitions", version.ref = "voyagerVersion" }
 
 
 [plugins]

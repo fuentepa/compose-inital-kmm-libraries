@@ -75,7 +75,7 @@ android {
             versionNameSuffix = "-DEV"
             signingConfig = signingConfigs.getByName("development")
 
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "API_KEY", "\"b48053648cfc700c69cd0e280943fd32\"")
             // Uncomment this line to secure project's private_api_key
             // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")
@@ -90,7 +90,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
 
             // Redefine with production values. If they're the same, include this field into defaultConfig section.
-            buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com:443/v1/public/\"")
+            buildConfigField("String", "TMDB_BASE_URL", "\"https://gateway.marvel.com:443/v1/public/\"")
             buildConfigField("String", "API_KEY", "\"ff1bbafd775a6d0209d677f348c22d6b\"")
             // Uncomment this line to secure project's private_api_key
             // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")
@@ -123,10 +123,7 @@ android {
     }
 
     ksp {
-        arg(
-            "KOIN_CONGIG_CHECK",
-            "true"
-        )  //para chequear si nos hemos dejado algo sin configurar de koin
+        arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
         arg("KOIN_DEFAULT_MODULE", "true")
     }
 }
@@ -170,6 +167,9 @@ dependencies {
 
     implementation(libs.coil)
 
+    //Voyager
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
 
     //Datastore
     implementation(libs.android.datastore.preferences)

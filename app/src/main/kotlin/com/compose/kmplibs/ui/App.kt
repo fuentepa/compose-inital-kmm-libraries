@@ -17,11 +17,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
-import com.compose.kmplibs.ui.theme.ComposeinitalkmmlibrariesTheme
+import com.compose.kmplibs.ui.theme.AppTheme
+import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 
 
@@ -29,39 +32,31 @@ import org.koin.compose.KoinContext
 @Composable
 fun App(appState: AppState = rememberAppState()) {
     KoinContext {
-        AppScreen {
-            ModalNavigationDrawer(
-                drawerState = appState.drawerState,
-                drawerContent = {}
-            ) {
-                val snackbarHostState = remember { SnackbarHostState() }
-
-                Scaffold(
-                    topBar = {
-                        TheTopAppBar(
-                            title = { Text(stringResource(id = R.string.app_name)) },
-                            navigationIcon = {
-                                AppBarIcon(
-                                    imageVector = Icons.Default.Menu,
-                                    onClick = { appState.onMenuClick() }
-                                )
-                            }
-                        )
-                    },
-                    snackbarHost = {
-                        SnackbarHost(hostState = snackbarHostState)
-                    }
-                ) { padding ->
-                    Box(modifier = Modifier.padding(padding)) {
-                        MoviesScreen(onClick = {
-                            //esto es para probar que el click funciona, realmente aqui seria una navegacion
-                            LaunchedEffect(key1 = null) {
-                                appState.coroutineScope.launch {
-                                    snackbarHostState.showSnackbar(it.title)
+        AppTheme {
+            AppScreen {
+                ModalNavigationDrawer(
+                    drawerState = appState.drawerState,
+                    drawerContent = {}
+                ) {
+                    Scaffold(
+                        topBar = {
+                            TheTopAppBar(
+                                title = { Text(stringResource(id = R.string.screen_movies_title)) },
+                                navigationIcon = {
+                                    AppBarIcon(
+                                        imageVector = Icons.Default.Menu,
+                                        onClick = { appState.onMenuClick() }
+                                    )
                                 }
-                            }
-                        })
-
+                            )
+                        }
+                    ) { padding ->
+                        Navigator(screen = MoviesScreen()) { navigator ->
+                            SlideTransition(
+                                navigator = navigator,
+                                modifier = Modifier.padding(padding)
+                                )
+                        }
                     }
                 }
             }
@@ -71,7 +66,7 @@ fun App(appState: AppState = rememberAppState()) {
 
 @Composable
 fun AppScreen(content: @Composable () -> Unit) {
-    ComposeinitalkmmlibrariesTheme {
+    AppTheme {
         // A surface container using the 'background' color from the theme
         Surface(color = MaterialTheme.colorScheme.background) {
             content()

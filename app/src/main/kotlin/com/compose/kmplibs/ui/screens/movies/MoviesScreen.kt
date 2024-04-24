@@ -17,12 +17,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import org.koin.androidx.compose.koinViewModel
+
+class MoviesScreen: Screen {
+
+    @Composable
+    override fun Content() {
+
+        val navigator = LocalNavigator.currentOrThrow
+
+        val onClick: @Composable (Int) -> Unit = {
+            navigator.push(MovieDetailScreen(movieId = it))
+        }
+
+        MoviesScreen(onClick)
+    }
+}
 
 @Composable
 fun MoviesScreen(
-    onClick: @Composable (Movie) -> Unit,
+    onClick: @Composable (Int) -> Unit,
     modifier: Modifier = Modifier,
     vm: MoviesViewModel = koinViewModel(),
 ) {
@@ -47,7 +66,7 @@ fun MoviesScreen(
 @Composable
 fun MovieItem(
     movie: Movie,
-    onClick: @Composable (Movie) -> Unit,
+    onClick: @Composable (Int) -> Unit,
 ) {
     var isClicked by remember { mutableStateOf(false) }
 
@@ -62,7 +81,7 @@ fun MovieItem(
     }
 
     if (isClicked) {
-        onClick(movie)
+        onClick(movie.id)
         isClicked = false
     }
 }

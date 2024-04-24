@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class MovieDetailViewModel(private val getMovieDetailUseCase: GetMovieDetailUseCase) :
+class MovieDetailViewModel(private val movieId: Int,private val getMovieDetailUseCase: GetMovieDetailUseCase) :
     ViewModel() {
 
     private val _state = MutableStateFlow(UiState())
@@ -25,8 +25,7 @@ class MovieDetailViewModel(private val getMovieDetailUseCase: GetMovieDetailUseC
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)
-            // TODO: Retirieve ID!!
-            getMovieDetailUseCase.invoke(1).fold({ }) {
+            getMovieDetailUseCase.invoke(movieId).fold({ }) {
                 _state.value = UiState(movieDetails = it)
             }
         }

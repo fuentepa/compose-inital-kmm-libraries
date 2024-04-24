@@ -31,7 +31,7 @@ import org.koin.dsl.module
 val appModule = module {
     // TODO
     viewModel { MoviesViewModel(get()) }
-    viewModel { MovieDetailViewModel(get()) }
+    viewModel { parameters -> MovieDetailViewModel(movieId = parameters.get(), get()) }
 
     single<MoviesRepository> { MoviesRepositoryImpl(get()) }
 
@@ -40,7 +40,7 @@ val appModule = module {
     factory { UnsuccessResponseConverterFactory() }
     single(named("TMDBApi")) {
         ktorfit {
-            baseUrl(BuildConfig.BASE_URL)
+            baseUrl(BuildConfig.TMDB_BASE_URL)
 
             httpClient(HttpClient {
                 defaultRequest {
