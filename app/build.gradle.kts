@@ -75,7 +75,8 @@ android {
             versionNameSuffix = "-DEV"
             signingConfig = signingConfigs.getByName("development")
 
-            buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org\"")
+            buildConfigField("String", "TMDB_IMAGE_URL", "\"https://image.tmdb.org/t/p/w500\"")
             buildConfigField("String", "API_KEY", "\"b48053648cfc700c69cd0e280943fd32\"")
             // Uncomment this line to secure project's private_api_key
             // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")
@@ -165,7 +166,7 @@ dependencies {
     implementation(libs.ktor.client.logging)
     ksp(libs.ktorfit.ksp)
 
-    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     //Voyager
     implementation(libs.voyager.navigator)

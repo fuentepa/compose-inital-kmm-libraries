@@ -40,7 +40,7 @@ val appModule = module {
     factory { UnsuccessResponseConverterFactory() }
     single(named("TMDBApi")) {
         ktorfit {
-            baseUrl(BuildConfig.TMDB_BASE_URL)
+            baseUrl(BuildConfig.TMDB_BASE_URL + "/3/")
 
             httpClient(HttpClient {
                 defaultRequest {
@@ -49,7 +49,7 @@ val appModule = module {
                         HttpHeaders.ContentType to "application/json"
                     }
                     // TODO Token en BuildConfig?
-                    bearerAuth( BuildConfig.ACCESS_TOKEN)  //esto seria el uso basico de token, si se quiere configurar mas cosas se hace con io.ktor:ktor-client-auth plugin
+                    bearerAuth(BuildConfig.ACCESS_TOKEN)  //esto seria el uso basico de token, si se quiere configurar mas cosas se hace con io.ktor:ktor-client-auth plugin
                 }
 
                 install(Logging) {

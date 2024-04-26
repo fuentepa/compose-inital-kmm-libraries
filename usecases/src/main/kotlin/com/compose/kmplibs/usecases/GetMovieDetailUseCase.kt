@@ -9,5 +9,5 @@ fun interface GetMovieDetailUseCase {
 }
 
 class GetMovieDetailUseCaseImpl(private val repository: MoviesRepository) : GetMovieDetailUseCase {
-    override suspend operator fun invoke(id: Int): Result<MovieDetail> = repository.getMovieDetail(id)
+    override suspend operator fun invoke(id: Int): Result<MovieDetail> = repository.getMovieDetails(id)
 }

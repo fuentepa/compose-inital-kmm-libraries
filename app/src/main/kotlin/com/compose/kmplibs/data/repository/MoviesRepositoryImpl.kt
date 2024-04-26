@@ -19,7 +19,7 @@ class MoviesRepositoryImpl(@InjectedParam private val apiService: TMDBApiService
         apiService.getTopRatedMovies().results.map { it.map() }
     }
 
-    override suspend fun getMovieDetail(id: Int): Result<MovieDetail> = tryCall {
+    override suspend fun getMovieDetails(id: Int): Result<MovieDetail> = tryCall {
         Log.d("MoviesRepositoryImpl", "->  trycall -> getMovieDetail")
         apiService.getMovieDetail(id).map()
     }
