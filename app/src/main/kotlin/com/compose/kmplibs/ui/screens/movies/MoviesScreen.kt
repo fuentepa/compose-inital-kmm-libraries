@@ -1,23 +1,27 @@
 package com.compose.kmplibs.ui.screens.movies
 
-import android.util.Log
-import androidx.compose.foundation.*
+
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,17 +33,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.NavigatorContent
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.compose.AsyncImage
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.compose.kmplibs.BuildConfig
+import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.ui.navigation.AppBarIcon
+import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,19 +54,35 @@ class MoviesScreen: Screen {
 
     @Composable
     override fun Content() {
-
         val navigator = LocalNavigator.currentOrThrow
 
         val onClick: @Composable (Int) -> Unit = {
             navigator.push(MovieDetailScreen(movieId = it))
         }
 
-        MoviesScreen(onClick)
+        Scaffold(
+            topBar = {
+                TheTopAppBar(
+                    title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
+                    navigationIcon = {
+                        AppBarIcon(
+                            imageVector = Icons.Default.Menu,
+                            onClick = { /*abrir o cerrar el drawer*/ }
+                        )
+                    }
+                )
+            }
+        ) { paddingValues ->
+            ListMoviesScreen(
+                onClick = onClick,
+                modifier = Modifier.padding(paddingValues)
+                )
+        }
     }
 }
 
 @Composable
-fun MoviesScreen(
+fun ListMoviesScreen(
     onClick: @Composable (Int) -> Unit,
     modifier: Modifier = Modifier,
     vm: MoviesViewModel = koinViewModel(),
@@ -67,7 +90,10 @@ fun MoviesScreen(
     val state by vm.state.collectAsState()
 
     if (state.loading)
-        Box(modifier = modifier) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Text(text = "Loading...")
         }
 
@@ -129,7 +155,7 @@ fun MovieItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = stringResource(id = R.string.tooltip_description)
+                    contentDescription = null
                 )
             }
         }
