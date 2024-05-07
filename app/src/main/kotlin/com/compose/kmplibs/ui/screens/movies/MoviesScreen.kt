@@ -2,6 +2,7 @@ package com.compose.kmplibs.ui.screens.movies
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,17 +12,25 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,20 +54,41 @@ import coil.compose.AsyncImage
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.ui.AppState
 import com.compose.kmplibs.ui.navigation.AppBarIcon
+import com.compose.kmplibs.ui.navigation.DrawerContent
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
+import com.compose.kmplibs.ui.rememberAppState
+import com.compose.kmplibs.ui.screens.common.LoadingIndicator
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 class MoviesScreen: Screen {
 
     @Composable
     override fun Content() {
+        val appState: AppState = rememberAppState()
         val navigator = LocalNavigator.currentOrThrow
 
         val onClick: @Composable (Int) -> Unit = {
             navigator.push(MovieDetailScreen(movieId = it))
         }
+
+        ModalNavigationDrawer(
+            drawerState = appState.drawerState,
+            drawerContent = {
+                ModalDrawerSheet(
+                    modifier = Modifier.width(250.dp)
+                ) {
+                    DrawerContent(
+                        drawerOptions = AppState.DRAWER_OPTIONS,
+                        selectedIndex = 0,
+                        onOptionClick = { appState.coroutineScope.launch { appState.drawerState.close() } }
+                    )
+                }
+            }
+        ) {
 
         Scaffold(
             topBar = {
@@ -67,7 +97,7 @@ class MoviesScreen: Screen {
                     navigationIcon = {
                         AppBarIcon(
                             imageVector = Icons.Default.Menu,
-                            onClick = { /*abrir o cerrar el drawer*/ }
+                            onClick = { appState.onMenuClick() }
                         )
                     }
                 )
@@ -77,6 +107,7 @@ class MoviesScreen: Screen {
                 onClick = onClick,
                 modifier = Modifier.padding(paddingValues)
                 )
+            }
         }
     }
 }
@@ -90,18 +121,13 @@ fun ListMoviesScreen(
     val state by vm.state.collectAsState()
 
     if (state.loading)
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Loading...")
-        }
+        LoadingIndicator()
 
     if (state.movies.isNotEmpty())
-        LazyColumn(
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(160.dp),
+            contentPadding = PaddingValues(8.dp)
+        )  {
             items(state.movies) {
                 MovieItem(movie = it, onClick = onClick)
             }
@@ -118,8 +144,8 @@ fun MovieItem(
 
     Column(
         modifier = modifier
-            //.clickable { isClicked = true }
-            .padding(8.dp)
+            .clickable { isClicked = true }
+            .padding(4.dp)
     ) {
 
         Card {
@@ -132,11 +158,11 @@ fun MovieItem(
                     .build(),*/
                 model = "${BuildConfig.TMDB_IMAGE_URL}${movie.posterUrl}",
                 contentDescription = movie.title,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.LightGray)
-                    .aspectRatio(.5f)
+                    .aspectRatio(0.675f)
             )
         }
         Row(
@@ -147,7 +173,7 @@ fun MovieItem(
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 modifier = Modifier
-                    .padding(8.dp, 16.dp)
+                    .padding(4.dp, 8.dp)
                     .weight(1f)
             )
             IconButton(

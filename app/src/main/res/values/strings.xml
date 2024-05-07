@@ -3,4 +3,7 @@
     <string name="screen_movies_title">Movies</string>
     <string name="screen_movie_details_title">Movie Details</string>
     <string name="more_options">+ info</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="loading">Loading...</string>
 </resources>

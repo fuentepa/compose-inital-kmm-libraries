@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
+import com.compose.kmplibs.ui.screens.common.LoadingIndicator
 import com.compose.kmplibs.ui.screens.movies.ListMoviesScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 import org.koin.androidx.compose.koinViewModel
@@ -63,12 +65,7 @@ fun DetailMovieScreen(
     val state by vm.state.collectAsState()
 
     if (state.loading)
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Loading...")
-        }
+        LoadingIndicator()
 
     state.movieDetails?.let {
         Text(

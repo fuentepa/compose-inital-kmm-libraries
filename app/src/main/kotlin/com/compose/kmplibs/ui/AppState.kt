@@ -11,17 +11,21 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberAppState(
-    scaffoldState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
-): AppState = remember(scaffoldState, coroutineScope) {
-    AppState(scaffoldState,  coroutineScope)
+): AppState = remember(drawerState, coroutineScope) {
+    AppState(drawerState,  coroutineScope)
 }
 class AppState(
     val drawerState: DrawerState,
     val coroutineScope: CoroutineScope,
 ) {
+    companion object {
+        val DRAWER_OPTIONS = listOf("Home", "Settings", "Exit")
+    }
 
     fun onMenuClick() {
         coroutineScope.launch { drawerState.open() }
     }
+
 }
