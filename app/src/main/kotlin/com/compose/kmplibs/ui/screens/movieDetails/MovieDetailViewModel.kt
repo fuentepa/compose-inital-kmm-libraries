@@ -18,14 +18,16 @@ class MovieDetailViewModel(private val movieId: Int,private val getMovieDetailUs
 
     data class UiState(
         val loading: Boolean = false,
-        // TODO: Review
         val movieDetails: MovieDetail? = null,
+        val error: String? = null
     )
 
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)
-            getMovieDetailUseCase.invoke(movieId).fold({ }) {
+            getMovieDetailUseCase.invoke(movieId).fold({
+                _state.value = UiState(error = it.toString())
+            }) {
                 _state.value = UiState(movieDetails = it)
             }
         }

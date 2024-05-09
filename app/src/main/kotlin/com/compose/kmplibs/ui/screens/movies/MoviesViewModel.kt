@@ -19,12 +19,15 @@ class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUse
     data class UiState(
         val loading: Boolean = false,
         val movies: List<Movie> = emptyList(),
+        val error: String? = null
     )
 
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)
-            getTopRatedMoviesUseCase().fold({ }) {
+            getTopRatedMoviesUseCase().fold({
+                _state.value = UiState(error = it.toString())
+            }) {
                 _state.value = UiState(movies = it)
             }
         }

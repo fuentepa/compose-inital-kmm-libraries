@@ -132,6 +132,10 @@ fun ListMoviesScreen(
                 MovieItem(movie = it, onClick = onClick)
             }
         }
+
+    state.error?.let {
+        //Deberia recibir un onError para mostrar en el Scaffold.snackbarhost, como un snackbar
+    }
 }
 
 @Composable
