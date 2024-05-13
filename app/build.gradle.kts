@@ -76,7 +76,7 @@ android {
             signingConfig = signingConfigs.getByName("development")
 
             buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org\"")
-            buildConfigField("String", "TMDB_IMAGE_URL", "\"https://image.tmdb.org/t/p/w500\"")
+            buildConfigField("String", "TMDB_IMAGE_URL", "\"https://image.tmdb.org/t/p\"")
             buildConfigField("String", "API_KEY", "\"b48053648cfc700c69cd0e280943fd32\"")
             // Uncomment this line to secure project's private_api_key
             // buildConfigField("String", "PRIVATE_API_KEY", "\"${privateApiKeyProperties.getProperty("privateApiKey")}\"")

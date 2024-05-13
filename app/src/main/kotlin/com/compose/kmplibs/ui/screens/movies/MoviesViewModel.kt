@@ -3,6 +3,7 @@ package com.compose.kmplibs.ui.screens.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.usecases.GetTopRatedMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,22 +14,15 @@ import org.koin.android.annotation.KoinViewModel
 class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase) :
     ViewModel() {
 
-    private val _state = MutableStateFlow(UiState())
+    private val _state = MutableStateFlow<UIState<List<Movie>>>(UIState.Loading())
     val state = _state.asStateFlow()
-
-    data class UiState(
-        val loading: Boolean = false,
-        val movies: List<Movie> = emptyList(),
-        val error: String? = null
-    )
 
     init {
         viewModelScope.launch {
-            _state.value = UiState(loading = true)
             getTopRatedMoviesUseCase().fold({
-                _state.value = UiState(error = it.toString())
+                _state.value = UIState.Error(it.toString())
             }) {
-                _state.value = UiState(movies = it)
+                _state.value = UIState.Success(it)
             }
         }
     }

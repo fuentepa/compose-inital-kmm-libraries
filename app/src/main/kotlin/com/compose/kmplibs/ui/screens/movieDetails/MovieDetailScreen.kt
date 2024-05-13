@@ -39,7 +39,9 @@ import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
+import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingIndicator
+import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.screens.movies.ListMoviesScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 import org.koin.androidx.compose.koinViewModel
@@ -81,25 +83,25 @@ fun DetailMovieScreen(
 ) {
     val state by vm.state.collectAsState()
 
-    if (state.loading)
-        LoadingIndicator()
-
-    state.movieDetails?.let {
-        LazyColumn(
-            modifier = modifier
-        ) {
-            item {
-                Header(item = it)
+    when (state) {
+        is UIState.Loading -> LoadingIndicator()
+        is UIState.Error -> TODO( "Show error")
+        is UIState.Success -> {
+            (state as UIState.Success<MovieDetail>).data.let {
+                LazyColumn(
+                    modifier = modifier
+                ) {
+                    item {
+                        Header(item = it)
+                    }
+                    /*item.references.forEach {
+                        val (icon, @StringRes stringRes) = it.type.createUiData()
+                        section(icon, stringRes, it.references)
+                    }*/
+                }
             }
-            /*item.references.forEach {
-                val (icon, @StringRes stringRes) = it.type.createUiData()
-                section(icon, stringRes, it.references)
-            }*/
-        }
-    }
 
-    state.error?.let {
-        //TOOD: Show error
+        }
     }
 }
 
@@ -108,14 +110,11 @@ private fun Header(item: MovieDetail) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        AsyncImage(
-            model = "${BuildConfig.TMDB_IMAGE_URL}${item.posterUrl}",
-            contentDescription = item.title,
-            contentScale = ContentScale.Crop,
+        LoadImage(
+            url = "${BuildConfig.TMDB_IMAGE_URL}/w1280${item.backdropUrl}",
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
-                //.aspectRatio(1f)
+            //.aspectRatio(1f)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
