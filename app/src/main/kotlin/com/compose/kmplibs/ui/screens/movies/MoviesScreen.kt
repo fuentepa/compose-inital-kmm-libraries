@@ -1,7 +1,6 @@
 package com.compose.kmplibs.ui.screens.movies
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,8 +22,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -49,7 +50,8 @@ import com.compose.kmplibs.ui.navigation.DrawerContent
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.rememberAppState
 import com.compose.kmplibs.ui.screens.common.LoadImage
-import com.compose.kmplibs.ui.screens.common.LoadingIndicator
+import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
+import com.compose.kmplibs.ui.screens.common.ShowSnackBar
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import kotlinx.coroutines.launch
@@ -81,25 +83,36 @@ class MoviesScreen: Screen {
             }
         ) {
 
-        Scaffold(
-            topBar = {
-                TheTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
-                    navigationIcon = {
-                        AppBarIcon(
-                            imageVector = Icons.Default.Menu,
-                            onClick = { appState.onMenuClick() }
-                        )
-                    }
-                )
+            val snackbarHostState = remember { SnackbarHostState() }
+
+            Scaffold(
+                topBar = {
+                    TheTopAppBar(
+                        title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
+                        navigationIcon = {
+                            AppBarIcon(
+                                imageVector = Icons.Default.Menu,
+                                onClick = { appState.onMenuClick() }
+                            )
+                        }
+                    )
+                },
+               snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
+            ) { paddingValues ->
+                ListMoviesScreen(
+                    onClick = onClick,
+                    onErrorAction = {
+                        LaunchedEffect(Unit) {
+                            with(snackbarHostState) {
+                                currentSnackbarData?.dismiss()
+                                showSnackbar(it)
+                            }
+                        }
+                    },
+                    modifier = Modifier.padding(paddingValues)
+                    )
+                }
             }
-        ) { paddingValues ->
-            ListMoviesScreen(
-                onClick = onClick,
-                modifier = Modifier.padding(paddingValues)
-                )
-            }
-        }
     }
 }
 
@@ -107,13 +120,14 @@ class MoviesScreen: Screen {
 fun ListMoviesScreen(
     onClick: @Composable (Int) -> Unit,
     modifier: Modifier = Modifier,
+    onErrorAction: @Composable (String) -> Unit = {},
     vm: MoviesViewModel = koinViewModel(),
 ) {
     val state by vm.state.collectAsState()
 
     when (state) {
-        is UIState.Error -> TODO("Deberia recibir un onError para mostrar en el Scaffold.snackbarhost, como un snackbar")
-        is UIState.Loading -> LoadingIndicator()
+        is UIState.Error -> onErrorAction((state as UIState.Error).error)
+        is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
             state as UIState.Success
             (state as UIState.Success<List<Movie>>).data.let { movies ->

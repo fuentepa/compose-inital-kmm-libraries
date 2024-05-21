@@ -1,5 +1,4 @@
 pluginManagement {
-
     repositories {
         google {
             content {
@@ -22,6 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "compose-initial-kmm-libraries"
-include(":app")
-include(":usecases")
-include(":data")
+include(":app", ":usecases", ":data")

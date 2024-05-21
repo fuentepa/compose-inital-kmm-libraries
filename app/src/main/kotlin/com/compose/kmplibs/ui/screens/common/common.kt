@@ -13,17 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.compose.kmplibs.R
 
 @Composable
-fun LoadingIndicator(
+fun LoadingCircularIndicator(
     withText: Boolean = true
 ) {
     Column(
@@ -56,7 +53,7 @@ fun LoadImage(
             .build(),
         //model = "${BuildConfig.TMDB_IMAGE_URL}${movie.posterUrl}",
         loading = {
-            LoadingIndicator(withText = false)
+            LoadingCircularIndicator(withText = false)
         },
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
