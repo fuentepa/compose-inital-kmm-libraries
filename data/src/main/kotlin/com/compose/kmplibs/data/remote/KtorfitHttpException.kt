@@ -3,7 +3,8 @@ package com.compose.kmplibs.data.remote
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.Response
 import de.jensklingenberg.ktorfit.converter.Converter
-import de.jensklingenberg.ktorfit.internal.TypeData
+import de.jensklingenberg.ktorfit.converter.KtorfitResult
+import de.jensklingenberg.ktorfit.converter.TypeData
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
@@ -24,16 +25,18 @@ class UnsuccessResponseConverterFactory : Converter.Factory {
         val typeData: TypeData,
         val ktorfit: Ktorfit
     ) : Converter.SuspendResponseConverter<HttpResponse, Any> {
-        override suspend fun convert(response: HttpResponse): Any {
-            return try {
-                if (response.status.isSuccess()) {
-                    response.call.body(typeData.typeInfo)
-                } else {
-                    throw KtorfitHttpException(response, response.bodyAsText())
+        override suspend fun convert(result: KtorfitResult): Any {
+            return when(result) {
+                is KtorfitResult.Success -> {
+                    if (result.response.status.isSuccess())
+                        result.response.call.body(typeData.typeInfo)
+                    else {
+                        throw KtorfitHttpException(result.response, result.response.bodyAsText())
+                    }
                 }
-            } catch (exception: Exception) {
-                throw exception
+                is KtorfitResult.Failure -> throw result.throwable
             }
+
         }
     }
 

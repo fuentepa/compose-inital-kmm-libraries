@@ -9,7 +9,7 @@ import com.compose.kmplibs.data.repository.MoviesRepositoryImpl
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailViewModel
 import com.compose.kmplibs.ui.screens.movies.MoviesViewModel
 import de.jensklingenberg.ktorfit.Ktorfit
-import de.jensklingenberg.ktorfit.converter.builtin.CallConverterFactory
+import de.jensklingenberg.ktorfit.converter.CallConverterFactory
 import de.jensklingenberg.ktorfit.ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
