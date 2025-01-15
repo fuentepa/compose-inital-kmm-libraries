@@ -136,7 +136,7 @@ fun ListMoviesScreen(
                     modifier = modifier,
                     contentPadding = PaddingValues(8.dp)
                 ) {
-                    items(movies) {
+                    items(movies, key = { it.id }) {
                         MovieItem(movie = it, onClick = onClick)
                     }
                 }

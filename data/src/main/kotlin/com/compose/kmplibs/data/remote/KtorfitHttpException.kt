@@ -22,7 +22,7 @@ class KtorfitHttpException(  //for success responses with http error code inside
 class UnsuccessResponseConverterFactory : Converter.Factory {
 
     class UnsuccessResponseSuspendConverter(
-        val typeData: TypeData,
+        private val typeData: TypeData,
         val ktorfit: Ktorfit
     ) : Converter.SuspendResponseConverter<HttpResponse, Any> {
         override suspend fun convert(result: KtorfitResult): Any {
@@ -36,7 +36,6 @@ class UnsuccessResponseConverterFactory : Converter.Factory {
                 }
                 is KtorfitResult.Failure -> throw result.throwable
             }
-
         }
     }
 

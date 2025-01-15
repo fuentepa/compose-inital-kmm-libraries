@@ -3,8 +3,8 @@ import java.util.Properties
 
 
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
@@ -13,13 +13,13 @@ plugins {
 
 android {
     namespace = "com.compose.kmplibs"
-    compileSdk = 34
-    buildToolsVersion = "34.0.0"
+    compileSdk = 35
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "com.compose.kmplibs"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -105,11 +105,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
@@ -187,4 +187,11 @@ dependencies {
 
 composeCompiler {
     enableStrongSkippingMode = true
+}
+
+tasks.register("verifyKoin") {
+    dependsOn("checkKoinModules")
+    doLast {
+        println("Verificación de Koin completada.")
+    }
 }
