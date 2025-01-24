@@ -3,7 +3,7 @@ package com.compose.kmplibs.data.remote
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import io.ktor.utils.io.errors.IOException
+import kotlinx.io.IOException
 
 typealias Result<T> = Either<Error, T>
 

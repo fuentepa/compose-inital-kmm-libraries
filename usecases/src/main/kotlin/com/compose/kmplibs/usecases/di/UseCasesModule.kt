@@ -1,13 +1,9 @@
 package com.compose.kmplibs.usecases.di
 
-import com.compose.kmplibs.usecases.GetMovieDetailUseCase
-import com.compose.kmplibs.usecases.GetMovieDetailUseCaseImpl
-import com.compose.kmplibs.usecases.GetTopRatedMoviesUseCase
-import com.compose.kmplibs.usecases.GetTopRatedMoviesUseCaseImpl
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
 
-val useCasesModule = module {
-    factory<GetTopRatedMoviesUseCase> { GetTopRatedMoviesUseCaseImpl(get()) }
-    factory<GetMovieDetailUseCase> { GetMovieDetailUseCaseImpl(get()) }
-}
+@Module
+@ComponentScan("com.compose.kmplibs.usecases")
+class UseCasesModule
 

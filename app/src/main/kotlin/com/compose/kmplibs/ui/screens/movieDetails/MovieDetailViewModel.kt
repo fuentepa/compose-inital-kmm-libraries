@@ -3,7 +3,6 @@ package com.compose.kmplibs.ui.screens.movieDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.usecases.GetMovieDetailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -125,6 +125,7 @@ android {
         arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
         arg("KOIN_DEFAULT_MODULE", "true")
     }
+
 }
 
 dependencies {
@@ -151,7 +152,7 @@ dependencies {
     implementation(libs.koin.android) //o core si es kotlin solo
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
-    //koin Anotations
+    //koin Annotations
     implementation(platform(libs.koin.annotations.bom))
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp)
@@ -185,9 +186,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-}
+
 
 tasks.register("verifyKoin") {
     dependsOn("checkKoinModules")
