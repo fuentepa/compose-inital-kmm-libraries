@@ -143,6 +143,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
 
+    // Añadir las dependencias de Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+
     implementation(libs.io.arrow)
 
     //koin
@@ -168,10 +171,6 @@ dependencies {
 
     implementation(libs.coil.compose)
 
-    //Voyager
-    implementation(libs.voyager.navigator)
-    implementation(libs.voyager.transitions)
-
     //Datastore
     implementation(libs.android.datastore.preferences)
 
@@ -184,6 +183,8 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
 }
 
 

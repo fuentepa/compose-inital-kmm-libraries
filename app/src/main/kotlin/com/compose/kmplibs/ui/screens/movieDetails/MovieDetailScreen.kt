@@ -1,75 +1,66 @@
 package com.compose.kmplibs.ui.screens.movieDetails
 
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
+import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
+import com.compose.kmplibs.ui.screens.common.UIState
+import com.compose.kmplibs.ui.screens.movies.MovieItem
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-data class MovieDetailScreen(
-    val movieId: Int
-): Screen {
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val snackbarHostState =  SnackbarHostState()
+@Composable
+fun MovieDetailScreen(
+    movieId: Int,
+    navController: NavController
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        Scaffold(
-            topBar = {
-                TheTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.screen_movie_details_title)) },
-                    navigationIcon = {
-                        AppBarIcon(
-                            imageVector = Icons.Default.ArrowBack,
-                            onClick = { navigator.pop() }
-                        )
-                    }
-                )
-            },
-            snackbarHost = { SnackbarHost(snackbarHostState)}
-        ) { paddingValues ->
-            DetailMovieScreen(
-                movieId = movieId,
-                onErrorAction = {
-                    LaunchedEffect(Unit) {
-                        with(snackbarHostState) {
-                            currentSnackbarData?.dismiss()
-                            showSnackbar(it)
-                        }
-                    }
-                },
-                modifier = Modifier.padding(paddingValues)
+    Scaffold(
+        topBar = {
+            TheTopAppBar(
+                title = { Text(text = stringResource(id = R.string.screen_movie_details_title)) },
+                navigationIcon = {
+                    AppBarIcon(
+                        imageVector = Icons.Default.ArrowBack,
+                        onClick = { navController.popBackStack() }
+                    )
+                }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { paddingValues ->
+        DetailMovieScreen(
+            movieId = movieId,
+            onErrorAction = {
+                LaunchedEffect(Unit) {
+                    with(snackbarHostState) {
+                        currentSnackbarData?.dismiss()
+                        showSnackbar(it)
+                    }
+                }
+            },
+            modifier = Modifier.padding(paddingValues)
+        )
     }
 }
 
@@ -84,24 +75,25 @@ fun DetailMovieScreen(
 
     Log.d("TAG", "-> DetailMovieScreen: state = $state")
 
-    if (state.loading)
-        LoadingCircularIndicator()
-
-    state.data?.let {
-        LazyColumn(
-            modifier = modifier
-        ) {
-            item {
-                Header(item = it)
+    when (state) {
+        is UIState.Error -> onErrorAction((state as UIState.Error).error)
+        is UIState.Loading -> LoadingCircularIndicator()
+        is UIState.Success -> {
+            (state as UIState.Success<MovieDetail?>).data?.let { movieDetail ->
+                LazyColumn(
+                    modifier = modifier
+                ) {
+                    item {
+                        Header(item = movieDetail)
+                    }
+                    /*item.references.forEach {
+                        val (icon, @StringRes stringRes) = it.type.createUiData()
+                        section(icon, stringRes, it.references)
+                    }*/
+                }
             }
-            /*item.references.forEach {
-                val (icon, @StringRes stringRes) = it.type.createUiData()
-                section(icon, stringRes, it.references)
-            }*/
         }
     }
-
-    state.error?.let { onErrorAction(it) }
 }
 
 @Composable

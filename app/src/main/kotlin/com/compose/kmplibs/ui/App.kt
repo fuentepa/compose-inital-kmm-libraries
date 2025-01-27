@@ -3,23 +3,18 @@ package com.compose.kmplibs.ui
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
-import com.compose.kmplibs.ui.screens.movies.MoviesScreen
+import androidx.navigation.compose.rememberNavController
+import com.compose.kmplibs.ui.navigation.AppNavigation
 import com.compose.kmplibs.ui.theme.AppTheme
 import org.koin.compose.KoinContext
 
-
-@Preview
 @Composable
 fun App(appState: AppState = rememberAppState()) {
     KoinContext {
         AppTheme {
             AppScreen {
-                Navigator(MoviesScreen()) { navigator ->
-                    SlideTransition( navigator = navigator)
-                }
+                val navController = rememberNavController()
+                AppNavigation(navController)
             }
         }
     }

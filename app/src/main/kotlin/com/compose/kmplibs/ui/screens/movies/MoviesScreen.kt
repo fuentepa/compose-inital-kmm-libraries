@@ -1,6 +1,5 @@
 package com.compose.kmplibs.ui.screens.movies
 
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,9 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
@@ -51,70 +48,64 @@ import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.rememberAppState
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
-import com.compose.kmplibs.ui.screens.common.ShowSnackBar
 import com.compose.kmplibs.ui.screens.common.UIState
-import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-class MoviesScreen: Screen {
+@Composable
+fun MoviesScreen(navController: NavController) {
+    val appState: AppState = rememberAppState()
 
-    @Composable
-    override fun Content() {
-        val appState: AppState = rememberAppState()
-        val navigator = LocalNavigator.currentOrThrow
-
-        val onClick: @Composable (Int) -> Unit = {
-            navigator.push(MovieDetailScreen(movieId = it))
-        }
-
-        ModalNavigationDrawer(
-            drawerState = appState.drawerState,
-            drawerContent = {
-                ModalDrawerSheet(
-                    modifier = Modifier.width(250.dp)
-                ) {
-                    DrawerContent(
-                        drawerOptions = AppState.DRAWER_OPTIONS,
-                        selectedIndex = 0,
-                        onOptionClick = { appState.coroutineScope.launch { appState.drawerState.close() } }
-                    )
-                }
-            }
-        ) {
-
-            val snackbarHostState = remember { SnackbarHostState() }
-
-            Scaffold(
-                topBar = {
-                    TheTopAppBar(
-                        title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
-                        navigationIcon = {
-                            AppBarIcon(
-                                imageVector = Icons.Default.Menu,
-                                onClick = { appState.onMenuClick() }
-                            )
-                        }
-                    )
-                },
-               snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
-            ) { paddingValues ->
-                ListMoviesScreen(
-                    onClick = onClick,
-                    onErrorAction = {
-                        LaunchedEffect(Unit) {
-                            with(snackbarHostState) {
-                                currentSnackbarData?.dismiss()
-                                showSnackbar(it)
-                            }
-                        }
-                    },
-                    modifier = Modifier.padding(paddingValues)
-                    )
-                }
-            }
+    val onClick: @Composable (Int) -> Unit = { movieId ->
+        navController.navigate("movieDetail/$movieId")
     }
-}
+
+    ModalNavigationDrawer(
+        drawerState = appState.drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier.width(250.dp)
+            ) {
+                DrawerContent(
+                    drawerOptions = AppState.DRAWER_OPTIONS,
+                    selectedIndex = 0,
+                    onOptionClick = { appState.coroutineScope.launch { appState.drawerState.close() } }
+                )
+            }
+        }
+    ) {
+
+        val snackbarHostState = remember { SnackbarHostState() }
+
+        Scaffold(
+            topBar = {
+                TheTopAppBar(
+                    title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
+                    navigationIcon = {
+                        AppBarIcon(
+                            imageVector = Icons.Default.Menu,
+                            onClick = { appState.onMenuClick() }
+                        )
+                    }
+                )
+            },
+           snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
+        ) { paddingValues ->
+            ListMoviesScreen(
+                onClick = onClick,
+                onErrorAction = {
+                    LaunchedEffect(Unit) {
+                        with(snackbarHostState) {
+                            currentSnackbarData?.dismiss()
+                            showSnackbar(it)
+                        }
+                    }
+                },
+                modifier = Modifier.padding(paddingValues)
+                )
+            }
+        }
+    }
 
 @Composable
 fun ListMoviesScreen(
@@ -129,7 +120,6 @@ fun ListMoviesScreen(
         is UIState.Error -> onErrorAction((state as UIState.Error).error)
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
-            state as UIState.Success
             (state as UIState.Success<List<Movie>>).data.let { movies ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
