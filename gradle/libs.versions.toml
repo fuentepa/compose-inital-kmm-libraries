@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3"
+agp = "8.8.0"
 kotlin = "2.1.0"
 androidx-activityCompose = "1.10.0"
 androidx-appcompat = "1.7.0"
@@ -11,7 +11,7 @@ composeBom = "2025.01.00"
 junit = "4.13.2"
 lifecycleRuntimeKtx = "2.8.7"
 ksp_version = "2.1.0-1.0.29"
-koin-bom = "4.0.1" # koin version
+koin-bom = "4.0.2" # koin version
 koin-annotations-bom = "1.4.0" # koin ksp version
 ktorfit = "2.2.0"
 ktorfit-ksp = "2.2.0-1.0.29"
@@ -54,7 +54,7 @@ koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-nav
 koin-test = { group = "io.insert-koin", name = "koin-test"}
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4"}
 
-io-arrow = { group = "io.arrow-kt", name = "arrow-core", version = "2.0.0" }
+io-arrow = { group = "io.arrow-kt", name = "arrow-core", version = "2.0.1" }
 
 ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfit-ksp" }
 ktorfit-lib = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
