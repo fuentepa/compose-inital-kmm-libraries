@@ -1,5 +1,6 @@
 package com.compose.kmplibs.data.di
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
@@ -7,8 +8,8 @@ import org.koin.core.annotation.Single
 
 @Module
 @ComponentScan
-class DispatchersModule{
+class DispatchersModule {
 
     @Single(createdAtStart = true)
-    fun dispatcher() = Dispatchers.IO
+    fun dispatcher(): CoroutineDispatcher = Dispatchers.IO
 }

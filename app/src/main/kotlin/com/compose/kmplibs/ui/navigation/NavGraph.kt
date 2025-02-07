@@ -10,26 +10,18 @@ import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun navHost(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = NavRoutes.MOVIES
     ) {
-        composable(NavRoutes.MOVIES) {
-            MoviesScreen(navController)
-        }
+        composable(NavRoutes.MOVIES) { MoviesScreen(navController) }
         
         composable(
             route = NavRoutes.MOVIE_DETAIL,
-            arguments = listOf(
-                navArgument("movieId") { type = NavType.IntType }
-            )
+            arguments = listOf( navArgument("movieId") { type = NavType.IntType })
         ) { backStackEntry ->
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: 0
-            MovieDetailScreen(
-                movieId = movieId,
-                navController = navController
-            )
-        }
+            MovieDetailScreen( movieId = movieId, navController = navController )}
     }
 } 
