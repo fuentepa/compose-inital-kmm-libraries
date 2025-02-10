@@ -1,6 +1,6 @@
 plugins {
     id("kotlin")
-    alias(libs.plugins.serialization)
+    alias(libs.plugins.kotlinxserialization)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.ksp)
 }

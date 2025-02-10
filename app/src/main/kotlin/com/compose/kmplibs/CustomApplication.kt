@@ -2,6 +2,7 @@ package com.compose.kmplibs
 
 import android.app.Application
 import com.compose.kmplibs.data.di.DataModule
+import com.compose.kmplibs.data.di.DispatchersModule
 import com.compose.kmplibs.di.AppModule
 import com.compose.kmplibs.usecases.di.UseCasesModule
 import org.koin.android.ext.koin.androidContext
@@ -18,10 +19,9 @@ class CustomApplication : Application() {
             modules(
                 DataModule().module,
                 UseCasesModule().module,
-                AppModule().module
+                AppModule().module,
+                DispatchersModule().module
             )
         }
-
-
     }
 }

@@ -4,7 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.compose.kmplibs.ui.navigation.navHost
+import com.compose.kmplibs.ui.navigation.AppNavHost
 import com.compose.kmplibs.ui.theme.AppTheme
 import org.koin.compose.KoinContext
 
@@ -14,7 +14,7 @@ fun App(appState: AppState = rememberAppState()) {
         AppTheme {
             AppScreen {
                 val navController = rememberNavController()
-                navHost(navController)
+                AppNavHost(navController)
             }
         }
     }

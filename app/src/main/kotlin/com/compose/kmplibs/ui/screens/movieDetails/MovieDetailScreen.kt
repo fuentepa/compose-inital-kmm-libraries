@@ -31,7 +31,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun MovieDetailScreen(
     movieId: Int,
-    navController: NavController
+    onBack: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -42,7 +42,7 @@ fun MovieDetailScreen(
                 navigationIcon = {
                     AppBarIcon(
                         imageVector = Icons.Default.ArrowBack,
-                        onClick = { navController.popBackStack() }
+                        onClick = {  onBack() }
                     )
                 }
             )

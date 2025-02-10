@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
@@ -53,12 +52,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MoviesScreen(navController: NavController) {
+fun MoviesScreen(onClickItem: @Composable (Int) -> Unit) {
     val appState: AppState = rememberAppState()
-
-    val onClick: @Composable (Int) -> Unit = { movieId ->
-        navController.navigate("movieDetail/$movieId")
-    }
 
     ModalNavigationDrawer(
         drawerState = appState.drawerState,
@@ -92,7 +87,7 @@ fun MoviesScreen(navController: NavController) {
            snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
         ) { paddingValues ->
             ListMoviesScreen(
-                onClick = onClick,
+                onClickItem = onClickItem,
                 onErrorAction = {
                     LaunchedEffect(Unit) {
                         with(snackbarHostState) {
@@ -109,11 +104,12 @@ fun MoviesScreen(navController: NavController) {
 
 @Composable
 fun ListMoviesScreen(
-    onClick: @Composable (Int) -> Unit,
+    onClickItem: @Composable (Int) -> Unit,
     modifier: Modifier = Modifier,
     onErrorAction: @Composable (String) -> Unit = {},
     vm: MoviesViewModel = koinViewModel(),
 ) {
+
     val state by vm.state.collectAsState()
 
     when (state) {
@@ -127,7 +123,7 @@ fun ListMoviesScreen(
                     contentPadding = PaddingValues(8.dp)
                 ) {
                     items(movies, key = { it.id }) {
-                        MovieItem(movie = it, onClick = onClick)
+                        MovieItem(movie = it, onClick = onClickItem)
                     }
                 }
             }
