@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MoviesScreen(onClickItem: @Composable (Int) -> Unit) {
+fun MoviesScreen(onClickItem: (Int) -> Unit) {
     val appState: AppState = rememberAppState()
 
     ModalNavigationDrawer(
@@ -104,7 +104,7 @@ fun MoviesScreen(onClickItem: @Composable (Int) -> Unit) {
 
 @Composable
 fun ListMoviesScreen(
-    onClickItem: @Composable (Int) -> Unit,
+    onClickItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
     onErrorAction: @Composable (String) -> Unit = {},
     vm: MoviesViewModel = koinViewModel(),
@@ -123,7 +123,7 @@ fun ListMoviesScreen(
                     contentPadding = PaddingValues(8.dp)
                 ) {
                     items(movies, key = { it.id }) {
-                        MovieItem(movie = it, onClick = onClickItem)
+                        MovieItem(movie = it, onClickMovie = { onClickItem(it.id) })
                     }
                 }
             }
@@ -134,14 +134,12 @@ fun ListMoviesScreen(
 @Composable
 fun MovieItem(
     movie: Movie,
-    onClick: @Composable (Int) -> Unit,
+    onClickMovie:  () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isClicked by remember { mutableStateOf(false) }
-
     Column(
         modifier = modifier
-            .clickable { isClicked = true }
+            .clickable(onClick = onClickMovie )
             .padding(4.dp)
     ) {
         Card {
@@ -166,19 +164,12 @@ fun MovieItem(
                     .padding(4.dp, 8.dp)
                     .weight(1f)
             )
-            IconButton(
-                onClick = { isClicked = true }
-            ) {
+            IconButton(onClick = onClickMovie) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = null
                 )
             }
         }
-    }
-
-    if (isClicked) {
-        onClick(movie.id)
-        isClicked = false
     }
 }

@@ -26,15 +26,9 @@ import org.koin.core.annotation.Single
 @Module
 @ComponentScan("com.compose.kmplibs")
 class AppModule {
-
+    
     @Single
-    fun provideJson(): Json = Json {
-        isLenient = true
-        ignoreUnknownKeys = true
-    }
-
-    @Single
-    fun provideHttpClient(json: Json): HttpClient {
+    fun httpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
                 headers {
@@ -54,7 +48,7 @@ class AppModule {
             }
 
             install(ContentNegotiation) {
-                json(json)
+                json(json = Json { ignoreUnknownKeys = true; isLenient = true })
             }
 
             install(HttpTimeout) {
@@ -67,7 +61,7 @@ class AppModule {
 
     @Single
     @Named("TMDBApi")
-    fun provideKtorfit(httpClient: HttpClient): Ktorfit {
+    fun ktorfit(httpClient: HttpClient): Ktorfit {
         return Ktorfit.Builder()
             .baseUrl(BuildConfig.TMDB_BASE_URL + "/3/")
             .httpClient(httpClient)
@@ -76,7 +70,7 @@ class AppModule {
     }
 
     @Single
-    fun provideTMDBApiService(@Named("TMDBApi") ktorfit: Ktorfit): TMDBApiService {
+    fun tmdbApiService(@Named("TMDBApi") ktorfit: Ktorfit): TMDBApiService {
         return ktorfit.createTMDBApiService()
     }
 

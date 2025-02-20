@@ -1,12 +1,9 @@
 package com.compose.kmplibs.ui.navigation
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
