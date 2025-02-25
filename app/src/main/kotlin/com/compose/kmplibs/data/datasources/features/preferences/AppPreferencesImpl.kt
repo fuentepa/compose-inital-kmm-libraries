@@ -14,6 +14,7 @@ class AppPreferencesRepositoryImpl(
     companion object {
         private val DEVICE_ID_KEY = longPreferencesKey("DeviceId")
     }
+
     override fun getDeviceId(): Flow<Long> = dataStore.data.map { preferences ->
         preferences[DEVICE_ID_KEY] ?: 0
     }

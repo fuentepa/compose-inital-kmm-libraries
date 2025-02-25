@@ -1,6 +1,6 @@
 [versions]
 agp = "8.8.1"
-kotlin = "2.1.0"
+kotlin = "2.1.10"
 androidx-activityCompose = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-core-ktx = "1.15.0"
@@ -10,14 +10,14 @@ androidx-test-junit = "1.2.1"
 composeBom = "2025.02.00"
 junit = "4.13.2"
 lifecycleRuntimeKtx = "2.8.7"
-ksp_version = "2.1.0-1.0.29"
+ksp_version = "2.1.10-1.0.30"
 koin-bom = "4.0.2" # koin version
 koin-annotations-bom = "1.4.0" # koin ksp version
 ktorfit = "2.4.0"
 ktorfit-ksp = "2.4.0"
 ktor = "3.1.0"
 datastore-version = "1.1.2"
-coil = "2.7.0"
+coil = "3.1.0"
 navigation-compose = "2.8.7"
 
 [libraries]
@@ -66,7 +66,10 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "ktor" } #como ya tenemos ktor3, dejamso que se use ktor para las llamadas de red y asi no tenemos  mas de una libreria.
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

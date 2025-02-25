@@ -170,6 +170,7 @@ dependencies {
     ksp(libs.ktorfit.ksp)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
 
     //Datastore
     implementation(libs.android.datastore.preferences)

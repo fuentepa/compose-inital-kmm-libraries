@@ -3,28 +3,24 @@ package com.compose.kmplibs.ui.screens.movieDetails
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
-import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
-import com.compose.kmplibs.ui.screens.movies.MovieItem
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -79,17 +75,13 @@ fun DetailMovieScreen(
         is UIState.Error -> onErrorAction((state as UIState.Error).error)
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
-            (state as UIState.Success<MovieDetail?>).data?.let { movieDetail ->
+            (state as UIState.Success).data?.let { movieDetail ->
                 LazyColumn(
                     modifier = modifier
                 ) {
                     item {
                         Header(item = movieDetail)
                     }
-                    /*item.references.forEach {
-                        val (icon, @StringRes stringRes) = it.type.createUiData()
-                        section(icon, stringRes, it.references)
-                    }*/
                 }
             }
         }
@@ -106,7 +98,9 @@ private fun Header(item: MovieDetail) {
             url = "${BuildConfig.TMDB_IMAGE_URL}/w1280${item.backdropUrl}",
             modifier = Modifier
                 .fillMaxWidth()
-            //.aspectRatio(1f)
+                .semantics {
+                    contentDescription = item.title
+                }
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(

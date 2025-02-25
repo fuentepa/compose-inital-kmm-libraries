@@ -142,10 +142,10 @@ fun MovieItem(
     ) {
         Card {
             LoadImage(
-                url = "${BuildConfig.TMDB_IMAGE_URL}/w500${movie.posterUrl}",
+                url = "${BuildConfig.TMDB_IMAGE_URL}/w500${movie.posterUrl}", // el 500 es para forzar un ancho y no traernos algo que pese muchisimo.
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(0.675f)
+                    .aspectRatio(0.675f) //valor para ajustar la proporcion del poster mas correctamente.
                     .semantics {
                         contentDescription = movie.title
                     }

@@ -16,6 +16,7 @@ fun rememberAppState(
 ): AppState = remember(drawerState, coroutineScope) {
     AppState(drawerState,  coroutineScope)
 }
+
 class AppState(
     val drawerState: DrawerState,
     val coroutineScope: CoroutineScope,
