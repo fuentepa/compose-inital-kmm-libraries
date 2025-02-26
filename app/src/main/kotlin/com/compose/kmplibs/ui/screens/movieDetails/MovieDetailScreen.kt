@@ -38,7 +38,7 @@ fun MovieDetailScreen(
                 navigationIcon = {
                     AppBarIcon(
                         imageVector = Icons.Default.ArrowBack,
-                        onClick = {  onBack() }
+                        onClick = { onBack() }
                     )
                 }
             )
@@ -76,12 +76,10 @@ fun DetailMovieScreen(
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
             (state as UIState.Success).data?.let { movieDetail ->
-                LazyColumn(
+                Column(
                     modifier = modifier
                 ) {
-                    item {
-                        Header(item = movieDetail)
-                    }
+                    Header(item = movieDetail)
                 }
             }
         }
