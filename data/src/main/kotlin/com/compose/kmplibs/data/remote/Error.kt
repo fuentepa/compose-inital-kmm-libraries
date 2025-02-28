@@ -7,14 +7,20 @@ import kotlinx.io.IOException
 
 typealias Result<T> = Either<Error, T>
 
-sealed class Error {
-    class Server(val code: Int) : Error()
-    data object Connectivity : Error()
-    class Unknown(val message: String) : Error()
+sealed interface Error {
+    fun toMessage(): String = when (this) {
+        is Server -> "Server Code Error = $code"
+        is Connectivity -> message
+        is Unknown -> message
+    }
+
+    data class Server(val code: Int) : Error
+    data class Connectivity(val message: String) : Error
+    data class Unknown(val message: String) : Error
 }
 
 fun Exception.toError(): Error = when (this) {
-    is IOException -> Error.Connectivity
+    is IOException -> Error.Connectivity(message ?: "")
     is KtorfitHttpException -> Error.Server(this.response.status.value) //esto se ajusta a lo que se necesite recoger
     else -> Error.Unknown(message ?: "")
 }

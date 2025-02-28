@@ -14,7 +14,7 @@ import org.koin.core.annotation.Single
 @Single(createdAtStart = true)
 class MoviesRepositoryImpl(
     private val apiService: TMDBApiService,
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
 ) : MoviesRepository {
 
     override suspend fun getTopRatedMovies(): Result<List<Movie>> = withContext(dispatcher) {

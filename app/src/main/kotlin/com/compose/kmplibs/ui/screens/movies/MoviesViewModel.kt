@@ -20,7 +20,7 @@ class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUse
     init {
         viewModelScope.launch {
             getTopRatedMoviesUseCase().fold({
-                _state.value = UIState.Error(it.toString())
+                _state.value = UIState.Error(it.toMessage())
             }) {
                 _state.value = UIState.Success(it)
             }

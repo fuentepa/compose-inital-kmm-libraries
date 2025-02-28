@@ -3,14 +3,18 @@ package com.compose.kmplibs.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
@@ -34,50 +38,58 @@ fun DrawerContent(
     selectedIndex: Int,
     onOptionClick: (String) -> Unit
 ) {
-    Box(
+    Column(
         modifier = Modifier
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.secondary,
-                        MaterialTheme.colorScheme.tertiary
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        Box(
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.secondary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
                     )
                 )
-            )
-            .height(200.dp)
-            .fillMaxWidth()
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    drawerOptions.forEachIndexed { index, navItem ->
-        val selected = selectedIndex == index
-        val colors = MaterialTheme.colorScheme
+                .height(200.dp)
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        drawerOptions.forEachIndexed { index, navItem ->
+            val selected = selectedIndex == index
+            val colors = MaterialTheme.colorScheme
+            val localContentColor = if (selected) colors.primary else colors.onBackground
 
-        val localContentColor = if (selected) colors.primary else colors.onBackground
-
-        CompositionLocalProvider(
-            LocalContentColor provides localContentColor,
-            LocalTextStyle provides MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-        ) {
-            Row(
-                modifier = Modifier
-                    .clickable { onOptionClick(navItem) }
-                    .fillMaxWidth()
-                    .padding(8.dp, 4.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(color = if (selected) LocalContentColor.current.copy(alpha = 0.12f) else Color.Transparent)
-                    .padding(12.dp)
+            CompositionLocalProvider(
+                LocalContentColor provides localContentColor,
+                LocalTextStyle provides MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null
-                )
+                Row(
+                    modifier = Modifier
+                        .clickable { onOptionClick(navItem) }
+                        .fillMaxWidth()
+                        .padding(8.dp, 4.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(
+                            color = if (selected) LocalContentColor.current.copy(alpha = 0.12f)
+                            else Color.Transparent
+                        )
+                        .padding(12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
 
-                Spacer(modifier = Modifier.width(24.dp))
+                    Spacer(modifier = Modifier.width(24.dp))
 
-                Text(
-                    text = navItem,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-                )
+                    Text(
+                        text = navItem,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                    )
+                }
             }
         }
     }

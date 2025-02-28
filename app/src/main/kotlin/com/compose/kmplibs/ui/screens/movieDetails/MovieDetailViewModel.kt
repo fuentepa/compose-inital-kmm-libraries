@@ -23,7 +23,7 @@ class MovieDetailViewModel(
         viewModelScope.launch {
             try {
                 getMovieDetailUseCase(movieId).fold(
-                    { error -> _state.value = UIState.Error(error.toString()) },
+                    { error -> _state.value = UIState.Error(error.toMessage()) },
                     { data -> _state.value = UIState.Success(data) }
                 )
             } catch (e: Exception) {

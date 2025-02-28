@@ -35,7 +35,7 @@ class AppModule {
                     HttpHeaders.Accept to "application/json"
                     HttpHeaders.ContentType to "application/json"
                 }
-                bearerAuth(BuildConfig.ACCESS_TOKEN) // Usa el token de `BuildConfig`
+                bearerAuth(BuildConfig.ACCESS_TOKEN) // Usa el token de `BuildConfig` quizas se pueda hacer mejor de otra manera
             }
 
             install(Logging) {
