@@ -1,4 +1,4 @@
-package com.compose.kmplibs.data.repository
+package com.compose.kmplibs.data.datasources.database
 
 import android.util.Log
 import com.compose.kmplibs.data.entity.Movie
@@ -7,15 +7,16 @@ import com.compose.kmplibs.data.entity.map
 import com.compose.kmplibs.data.remote.Result
 import com.compose.kmplibs.data.remote.TMDBApiService
 import com.compose.kmplibs.data.remote.tryCall
+import com.compose.kmplibs.data.source.RemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
 
 @Single(createdAtStart = true)
-class MoviesRepositoryImpl(
+class RemoteDataSourceImpl(
     private val apiService: TMDBApiService,
     private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
-) : MoviesRepository {
+) : RemoteDataSource {
 
     override suspend fun getTopRatedMovies(): Result<List<Movie>> = withContext(dispatcher) {
         tryCall {

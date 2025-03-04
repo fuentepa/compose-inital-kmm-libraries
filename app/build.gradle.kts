@@ -9,6 +9,11 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {
@@ -125,7 +130,6 @@ android {
         arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
         arg("KOIN_DEFAULT_MODULE", "true")
     }
-
 }
 
 dependencies {
@@ -174,6 +178,11 @@ dependencies {
 
     //Datastore
     implementation(libs.android.datastore.preferences)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
 
