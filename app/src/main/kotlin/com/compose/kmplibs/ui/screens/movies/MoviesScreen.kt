@@ -7,19 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,82 +35,57 @@ import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.ui.AppState
-import com.compose.kmplibs.ui.navigation.AppBarIcon
-import com.compose.kmplibs.ui.navigation.DrawerContent
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.rememberAppState
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MoviesScreen(onClickItem: (Int) -> Unit) {
+fun MoviesScreen(onMovieClick: (Int) -> Unit) {
     val appState: AppState = rememberAppState()
 
-    ModalNavigationDrawer(
-        drawerState = appState.drawerState,
-        drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier.width(250.dp)
-            ) {
-                DrawerContent(
-                    drawerOptions = AppState.DRAWER_OPTIONS,
-                    selectedIndex = 0,
-                    onOptionClick = { appState.coroutineScope.launch { appState.drawerState.close() } }
-                )
-            }
-        }
-    ) {
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        val snackbarHostState = remember { SnackbarHostState() }
-
-        Scaffold(
-            topBar = {
-                TheTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.screen_movies_title)) },
-                    navigationIcon = {
-                        AppBarIcon(
-                            imageVector = Icons.Default.Menu,
-                            onClick = { appState.onMenuClick() }
-                        )
+    Scaffold(
+        topBar = {
+            TheTopAppBar( title = { Text(text = stringResource(id = R.string.screen_movies_title)) } )
+        },
+       snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
+    ) { paddingValues ->
+        MoviesContent(
+            onClickItem = onMovieClick,
+            onErrorAction = {
+                LaunchedEffect(Unit) {
+                    with(snackbarHostState) {
+                        currentSnackbarData?.dismiss()
+                        showSnackbar(it)
                     }
-                )
+                }
             },
-           snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
-        ) { paddingValues ->
-            ListMoviesScreen(
-                onClickItem = onClickItem,
-                onErrorAction = {
-                    LaunchedEffect(Unit) {
-                        with(snackbarHostState) {
-                            currentSnackbarData?.dismiss()
-                            showSnackbar(it)
-                        }
-                    }
-                },
-                modifier = Modifier.padding(paddingValues)
-                )
-            }
-        }
+            modifier = Modifier.padding(paddingValues)
+        )
     }
+}
+
+
 
 @Composable
-fun ListMoviesScreen(
+fun MoviesContent(
     onClickItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
     onErrorAction: @Composable (String) -> Unit = {},
     vm: MoviesViewModel = koinViewModel(),
 ) {
 
-    val state by vm.state.collectAsState()
+    val uiState by vm.uiState.collectAsState()
 
-    when (state) {
-        is UIState.Error -> onErrorAction((state as UIState.Error).error)
+    when (uiState) {
+        is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
-            (state as UIState.Success<List<Movie>>).data.let { movies ->
+            (uiState as UIState.Success<List<Movie>>).data.let { movies ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
                     modifier = modifier,

@@ -1,7 +1,9 @@
-package com.compose.kmplibs.ui.screens.movieDetails
+package com.compose.kmplibs.ui.screens.settings
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,57 +12,45 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
-import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
-import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
-fun MovieDetailScreen(
-    movieId: Int,
-    onBack: () -> Unit
-) {
+fun SettingsScreen()
+{
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         topBar = {
             TheTopAppBar(
-                title = { Text(text = stringResource(id = R.string.screen_movie_details_title)) },
-                navigationIcon = {
-                    AppBarIcon(
-                        imageVector = Icons.Default.ArrowBack,
-                        onClick = onBack
-                    )
-                }
+                title = { Text(stringResource(R.string.configuration)) },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
-        MovieDetailsContent(
-            movieId = movieId,
+
+        SettingsContent(
             onErrorAction = {
                 LaunchedEffect(Unit) {
                     with(snackbarHostState) {
@@ -75,27 +65,29 @@ fun MovieDetailScreen(
 }
 
 @Composable
-fun MovieDetailsContent(
-    movieId: Int,
-    modifier: Modifier = Modifier,
+fun SettingsContent(
     onErrorAction: @Composable (String) -> Unit = {},
-    vm: MovieDetailViewModel = koinViewModel { parametersOf(movieId) }
+    viewModel: SettingsViewModel = koinViewModel(),
+    modifier: Modifier = Modifier
 ) {
-    val uiState by vm.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
-    Log.d("TAG", "-> MovieDetailsContent: state = $uiState")
+    Log.d("TAG", "-> SettingsContent: state = $uiState")
 
     when (uiState) {
         is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
-            (uiState as UIState.Success).data?.let { movieDetail ->
+            (uiState as UIState.Success).data.let {
                 Column(
                     modifier = modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Header(item = movieDetail)
+                    BodyContent(
+                        isDarkMode = it.isDarkMode,
+                        onDarkModeToggle = { viewModel.toggleDarkMode() }
+                    )
                 }
             }
         }
@@ -103,34 +95,56 @@ fun MovieDetailsContent(
 }
 
 @Composable
-private fun Header(item: MovieDetail) {
+private fun BodyContent(
+    isDarkMode: Boolean,
+    onDarkModeToggle: () -> Unit
+) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        LoadImage(
-            url = "${BuildConfig.TMDB_IMAGE_URL}/w1280${item.backdropUrl}",
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics {
-                    contentDescription = item.title
+        Text(
+            text = stringResource(R.string.aparience),
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(R.string.dark_mode),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Text(
+                        text = "Modo Oscuro",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
                 }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = item.title,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 0.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = item.overview,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(16.dp, 0.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+
+                Switch(
+                    checked = isDarkMode,
+                    onCheckedChange = { onDarkModeToggle() }
+                )
+            }
+        }
     }
 }
+
+

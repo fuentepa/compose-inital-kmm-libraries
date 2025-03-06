@@ -2,8 +2,13 @@ package com.compose.kmplibs.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object Home
+sealed interface NavDestinations {
+    @Serializable
+    data object Home: NavDestinations
 
-@Serializable
-data class Detail(val moviId: Int)
+    @Serializable
+    data class Detail(val moviId: Int): NavDestinations
+
+    @Serializable
+    data object Settings: NavDestinations
+}

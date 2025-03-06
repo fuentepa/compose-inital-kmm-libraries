@@ -16,18 +16,18 @@ class MovieDetailViewModel(
     private val getMovieDetailUseCase: GetMovieDetailUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<UIState<MovieDetail?>>(UIState.Loading())
-    val state = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<UIState<MovieDetail?>>(UIState.Loading())
+    val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             try {
                 getMovieDetailUseCase(movieId).fold(
-                    { error -> _state.value = UIState.Error(error.toMessage()) },
-                    { data -> _state.value = UIState.Success(data) }
+                    { error -> _uiState.value = UIState.Error(error.toMessage()) },
+                    { data -> _uiState.value = UIState.Success(data) }
                 )
             } catch (e: Exception) {
-                _state.value = UIState.Error(error = e.localizedMessage ?: "Unknown error")
+                _uiState.value = UIState.Error(error = e.localizedMessage ?: "Unknown error")
             }
         }
     }

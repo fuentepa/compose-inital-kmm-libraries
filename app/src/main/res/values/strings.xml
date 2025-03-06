@@ -6,4 +6,7 @@
     <string name="home">Home</string>
     <string name="settings">Settings</string>
     <string name="loading">Loading…</string>
+    <string name="configuration">Configuración</string>
+    <string name="aparience">Apariencia</string>
+    <string name="dark_mode">Modo Oscuro</string>
 </resources>

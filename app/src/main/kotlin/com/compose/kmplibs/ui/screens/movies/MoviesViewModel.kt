@@ -14,15 +14,15 @@ import org.koin.android.annotation.KoinViewModel
 class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase) :
     ViewModel() {
 
-    private val _state = MutableStateFlow<UIState<List<Movie>>>(UIState.Loading())
-    val state = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<UIState<List<Movie>>>(UIState.Loading())
+    val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             getTopRatedMoviesUseCase().fold({
-                _state.value = UIState.Error(it.toMessage())
+                _uiState.value = UIState.Error(it.toMessage())
             }) {
-                _state.value = UIState.Success(it)
+                _uiState.value = UIState.Success(it)
             }
         }
     }

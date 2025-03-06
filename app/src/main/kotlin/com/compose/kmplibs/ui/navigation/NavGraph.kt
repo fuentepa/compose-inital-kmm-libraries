@@ -7,27 +7,35 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
+import com.compose.kmplibs.ui.screens.settings.SettingsScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController) {
+fun AppNavHost(
+    navController: NavHostController,
+    navDestination: NavDestinations = NavDestinations.Home
+) {
     NavHost(
         navController = navController,
-        startDestination = Home
+        startDestination = navDestination
     ) {
-        composable<Home> {
+        composable<NavDestinations.Home> {
             MoviesScreen(
-                { movieId ->
-                    navController.navigate(Detail(movieId))
+                onMovieClick = { movieId ->
+                    navController.navigate(NavDestinations.Detail(movieId))
                 }
             )
         }
         
-        composable<Detail> { backStackEntry ->
-            val detail = backStackEntry.toRoute<Detail>()
+        composable<NavDestinations.Detail> { backStackEntry ->
+            val detail = backStackEntry.toRoute<NavDestinations.Detail>()
             MovieDetailScreen(
                 movieId = detail.moviId,
                 onBack = { navController.popBackStack() }
             )
+        }
+        
+        composable<NavDestinations.Settings> {
+            SettingsScreen()
         }
     }
 } 

@@ -4,9 +4,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import okio.Path.Companion.toPath
+import org.koin.core.annotation.Single
 
+@Single
 fun createDataStore(
-    producePath: () -> String,
+    producePath: () -> String = { dataStoreFileName },
 ): DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath(
     corruptionHandler = null,
     migrations = emptyList(),

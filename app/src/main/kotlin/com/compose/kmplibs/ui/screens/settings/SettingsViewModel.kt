@@ -1,0 +1,49 @@
+package com.compose.kmplibs.ui.screens.settings
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.compose.kmplibs.data.datasources.features.preferences.AppPreferencesRepository
+import com.compose.kmplibs.ui.screens.common.UIState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
+
+data class SettingsState(
+    var isDarkMode: Boolean = false
+)
+
+@KoinViewModel
+class SettingsViewModel(
+    private val preferencesRepository: AppPreferencesRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<UIState<SettingsState>>(UIState.Loading())
+    val uiState: StateFlow<UIState<SettingsState>> = _uiState.asStateFlow()
+
+    init {
+        loadPreferences()
+    }
+
+    private fun loadPreferences() {
+        viewModelScope.launch {
+            preferencesRepository.isDarkTheme().collect { isDarkMode ->
+                _uiState.value = UIState.Success(SettingsState(isDarkMode))
+            }
+        }
+    }
+
+    fun toggleDarkMode() {
+        viewModelScope.launch {
+            when(_uiState.value) {
+                is UIState.Success -> {
+                    val newDarkModeState = !(_uiState.value as UIState.Success<SettingsState>).data.isDarkMode
+                    preferencesRepository.setDarkTheme(newDarkModeState)
+                    _uiState.value = UIState.Success(SettingsState(newDarkModeState))
+                }
+                else -> Unit
+            }
+        }
+    }
+} 
