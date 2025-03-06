@@ -2,9 +2,10 @@ package com.compose.kmplibs.di
 
 import android.content.Context
 import android.util.Log
-import androidx.room.Room
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import com.compose.kmplibs.BuildConfig
-import com.compose.kmplibs.data.datasources.database.AppDatabase
 import com.compose.kmplibs.data.remote.TMDBApiService
 import com.compose.kmplibs.data.remote.UnsuccessResponseConverterFactory
 import com.compose.kmplibs.data.remote.createTMDBApiService
@@ -20,14 +21,12 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.http.HttpHeaders
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import okio.Path.Companion.toPath
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
-import org.koin.core.context.GlobalContext.get
-import org.koin.dsl.koinApplication
 
 @Module
 @ComponentScan("com.compose.kmplibs")
@@ -80,4 +79,12 @@ class AppModule {
         return ktorfit.createTMDBApiService()
     }
 
+    @Single
+    fun dataStore(context: Context): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.createWithPath(
+            corruptionHandler = null,
+            migrations = listOf(),
+            produceFile = { context.filesDir.resolve("kmmlibs.preferences_pb").absolutePath.toPath() }
+        )
+    }
 }
