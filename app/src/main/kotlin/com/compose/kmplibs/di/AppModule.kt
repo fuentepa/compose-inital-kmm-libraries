@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.data.remote.TMDBApiService
-import com.compose.kmplibs.data.remote.UnsuccessResponseConverterFactory
+import com.compose.kmplibs.data.remote.ResponseConverterFactory
 import com.compose.kmplibs.data.remote.createTMDBApiService
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
@@ -70,7 +70,7 @@ class AppModule {
         return Ktorfit.Builder()
             .baseUrl(BuildConfig.TMDB_BASE_URL + "/3/")
             .httpClient(httpClient)
-            .converterFactories(UnsuccessResponseConverterFactory())
+            .converterFactories(ResponseConverterFactory())
             .build()
     }
 

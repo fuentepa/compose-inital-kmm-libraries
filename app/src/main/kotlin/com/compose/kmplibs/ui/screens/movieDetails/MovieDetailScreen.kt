@@ -25,13 +25,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
-import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
@@ -61,7 +58,6 @@ fun MovieDetailScreen(
                     showSnackbar((uiState as UIState.Error).error)
                 }
             }
-
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
             (uiState as UIState.Success).data?.let { movieDetail ->

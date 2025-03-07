@@ -24,7 +24,7 @@ class AppPreferencesRepositoryImpl(
         preferences[DEVICE_ID_KEY] ?: 0
     }
 
-    override suspend fun setDeviceId(deviceId: Long) : Unit = withContext(dispatcher){
+    override suspend fun setDeviceId(deviceId: Long): Unit = withContext(dispatcher){
         tryCall {
             dataStore.edit { preferences ->
                 preferences[DEVICE_ID_KEY] = deviceId

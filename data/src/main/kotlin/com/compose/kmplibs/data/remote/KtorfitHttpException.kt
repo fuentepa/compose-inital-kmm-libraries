@@ -19,9 +19,19 @@ class KtorfitHttpException(  //for success responses with http error code inside
 }
 
 @Factory
-class UnsuccessResponseConverterFactory : Converter.Factory {
+class ResponseConverterFactory : Converter.Factory {
 
-    class UnsuccessResponseSuspendConverter(
+    override fun suspendResponseConverter(
+        typeData: TypeData,
+        ktorfit: Ktorfit
+    ): Converter.SuspendResponseConverter<HttpResponse, *>? {
+        if (typeData.typeInfo.type != Response::class) {
+            return ResponseConverter(typeData, ktorfit)
+        }
+        return null
+    }
+
+    class ResponseConverter(
         private val typeData: TypeData,
         val ktorfit: Ktorfit
     ) : Converter.SuspendResponseConverter<HttpResponse, Any> {
@@ -37,15 +47,5 @@ class UnsuccessResponseConverterFactory : Converter.Factory {
                 is KtorfitResult.Failure -> throw result.throwable
             }
         }
-    }
-
-    override fun suspendResponseConverter(
-        typeData: TypeData,
-        ktorfit: Ktorfit
-    ): Converter.SuspendResponseConverter<HttpResponse, *>? {
-        if (typeData.typeInfo.type != Response::class) {
-            return UnsuccessResponseSuspendConverter(typeData, ktorfit)
-        }
-        return null
     }
 }
