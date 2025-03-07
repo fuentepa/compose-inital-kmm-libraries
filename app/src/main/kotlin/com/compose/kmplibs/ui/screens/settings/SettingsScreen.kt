@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.R
+import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
@@ -104,13 +106,6 @@ private fun BodyContent(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = stringResource(R.string.aparience),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Card(
             modifier = Modifier.fillMaxWidth()

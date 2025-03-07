@@ -7,6 +7,7 @@ import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
 
+//aqui se pueden cambiar los valores a lo que nos pidan en el proyecto
 fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSuiteType {
     Log.d("getNavigationTypeForWindowInfo", "with = ${windowInfo.windowSizeClass.windowWidthSizeClass} and height = ${windowInfo.windowSizeClass.windowHeightSizeClass}")
     return with(windowInfo) {
@@ -14,7 +15,7 @@ fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSu
             windowPosture.isTabletop ||
             windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT
         ) {
-            NavigationSuiteType.NavigationDrawer
+            NavigationSuiteType.NavigationRail
         } else if (
             windowSizeClass.windowWidthSizeClass == EXPANDED ||
             windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM
@@ -24,4 +25,7 @@ fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSu
             NavigationSuiteType.NavigationBar
         }
     }
-} 
+}
+
+fun isExpandedScreen(windowInfo: WindowAdaptiveInfo): Boolean =
+    windowInfo.windowSizeClass.windowWidthSizeClass == EXPANDED

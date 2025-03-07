@@ -157,7 +157,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android) //o core si es kotlin solo
-    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+
+  //  implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+  //  implementation(libs.androidx.adaptive.layout.android)
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
     //koin Annotations
@@ -197,7 +199,7 @@ dependencies {
 
     // Dependencias para Material3 Adaptive
     implementation(libs.androidx.material3.adaptive.navigation.suite.android)
-    implementation(libs.androidx.material3.window.size)
+  //  implementation(libs.androidx.material3.window.size)
 }
 
 tasks.register("verifyKoin") {

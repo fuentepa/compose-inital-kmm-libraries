@@ -1,7 +1,9 @@
 package com.compose.kmplibs.ui.screens.movieDetails
 
 import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,69 +38,93 @@ import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
+import com.compose.kmplibs.ui.util.isExpandedScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MovieDetailScreen(
     movieId: Int,
+    vm: MovieDetailViewModel = koinViewModel { parametersOf(movieId) },
     onBack: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(
-        topBar = {
-            TheTopAppBar(
-                title = { Text(text = stringResource(id = R.string.screen_movie_details_title)) },
-                navigationIcon = {
-                    AppBarIcon(
-                        imageVector = Icons.Default.ArrowBack,
-                        onClick = onBack
-                    )
-                }
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
-        MovieDetailsContent(
-            movieId = movieId,
-            onErrorAction = {
-                LaunchedEffect(Unit) {
-                    with(snackbarHostState) {
-                        currentSnackbarData?.dismiss()
-                        showSnackbar(it)
-                    }
-                }
-            },
-            modifier = Modifier.padding(paddingValues)
-        )
-    }
-}
-
-@Composable
-fun MovieDetailsContent(
-    movieId: Int,
-    modifier: Modifier = Modifier,
-    onErrorAction: @Composable (String) -> Unit = {},
-    vm: MovieDetailViewModel = koinViewModel { parametersOf(movieId) }
-) {
     val uiState by vm.uiState.collectAsState()
 
     Log.d("TAG", "-> MovieDetailsContent: state = $uiState")
 
     when (uiState) {
-        is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
+        is UIState.Error ->
+            LaunchedEffect(Unit) {
+                with(snackbarHostState) {
+                    currentSnackbarData?.dismiss()
+                    showSnackbar((uiState as UIState.Error).error)
+                }
+            }
+
         is UIState.Loading -> LoadingCircularIndicator()
         is UIState.Success -> {
             (uiState as UIState.Success).data?.let { movieDetail ->
-                Column(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                Scaffold(
+                    topBar = {
+                        TheTopAppBar(
+                            title = { Text(text = movieDetail.title) },
+                            navigationIcon = {
+                                AppBarIcon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    onClick = onBack
+                                )
+                            }
+                        )
+                    },
+                    snackbarHost = { SnackbarHost(snackbarHostState) }
+                ) { paddingValues ->
+                    MovieDetailsContent(
+                        movieDetail,
+                        modifier = Modifier.padding(paddingValues)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieDetailsContent(
+    movieDetail: MovieDetail,
+    modifier: Modifier = Modifier
+) {
+    if (isExpandedScreen(currentWindowAdaptiveInfo())) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Row {
+                Box(
+                    modifier = Modifier
+                        .weight(0.4f)
                 ) {
                     Header(item = movieDetail)
                 }
+
+                Box(
+                    modifier = Modifier
+                        .weight(0.6f)
+                ) {
+                    Body(item = movieDetail)
+                }
             }
+        }
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Header(item = movieDetail)
+            Spacer(modifier = Modifier.height(16.dp))
+            Body(item = movieDetail)
         }
     }
 }
@@ -116,16 +143,15 @@ private fun Header(item: MovieDetail) {
                     contentDescription = item.title
                 }
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = item.title,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 0.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun Body(item: MovieDetail) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Text(
             text = item.overview,
             style = MaterialTheme.typography.bodyLarge,

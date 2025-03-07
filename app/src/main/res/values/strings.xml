@@ -9,4 +9,5 @@
     <string name="configuration">Configuración</string>
     <string name="aparience">Apariencia</string>
     <string name="dark_mode">Modo Oscuro</string>
+    <string name="select_movie_message">Selecciona una película para ver sus detalles</string>
 </resources>
