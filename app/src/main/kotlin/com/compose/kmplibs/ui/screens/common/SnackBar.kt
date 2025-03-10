@@ -1,30 +1,117 @@
 package com.compose.kmplibs.ui.screens.common
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun SnackbarHostState.ShowSimpleSnackbar(message: String) {
+fun SnackbarHostState.ShowErrorSnackbar(message: String) {
     if (message.isNotEmpty()) {
         LaunchedEffect(Unit) {
-            with(this@ShowSimpleSnackbar) {
-                this.currentSnackbarData?.visuals
-                showSnackbar(message, null, false, SnackbarDuration.Long)
+            with(this@ShowErrorSnackbar) {
+                showSnackbar(
+                    SnackbarVisualsWithError(
+                        message = message,
+                        isError = true
+                    )
+                )
             }
         }
     }
 }
 
+// Clase personalizada para visuales de Snackbar con error
+class SnackbarVisualsWithError(
+    override val message: String,
+    override val actionLabel: String? = null,
+    override val withDismissAction: Boolean = false,
+    override val duration: SnackbarDuration = SnackbarDuration.Long,
+    val isError: Boolean = false
+) : SnackbarVisuals
+
+// Snackbar Host personalizado
 @Composable
-fun ShowSnackBar(
-    message: String,
-    snackBarHostState: SnackbarHostState
+fun SnackbarHostState.ErrorSnackbarHost(
+    modifier: Modifier = Modifier
 ) {
-    if (message.isNotEmpty()) {
-        LaunchedEffect(Unit) {
-            snackBarHostState.showSnackbar(message)
+    SnackbarHost(
+        hostState = this,
+        modifier = modifier,
+    ) { snackbarData ->
+        val isError = (snackbarData.visuals as? SnackbarVisualsWithError)?.isError == true
+        val backgroundColor = if (isError)
+            MaterialTheme.colorScheme.error
+        else
+            MaterialTheme.colorScheme.inverseSurface
+
+        val contentColor = if (isError)
+            MaterialTheme.colorScheme.onError
+        else
+            MaterialTheme.colorScheme.inverseOnSurface
+
+        Snackbar(
+            modifier = Modifier.padding(12.dp),
+            action = snackbarData.visuals.actionLabel?.let { actionLabel ->
+                {
+                    TextButton(
+                        onClick = { snackbarData.performAction() },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = contentColor
+                        )
+                    ) {
+                        Text(actionLabel)
+                    }
+                }
+            },
+            dismissAction = if (snackbarData.visuals.withDismissAction) {
+                {
+                    IconButton(onClick = { snackbarData.dismiss() }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Cerrar",
+                            tint = contentColor
+                        )
+                    }
+                }
+            } else null,
+            containerColor = backgroundColor,
+            contentColor = contentColor,
+            shape = RoundedCornerShape(8.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (isError) {
+                    Icon(
+                        imageVector = Icons.Filled.Warning, // o Icons.Filled.Info
+                        contentDescription = "Error",
+                        tint = contentColor
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Text(snackbarData.visuals.message)
+            }
         }
     }
 }

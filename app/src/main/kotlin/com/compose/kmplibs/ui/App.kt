@@ -15,7 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppNavHost
 import com.compose.kmplibs.ui.navigation.NavDestinations
 import com.compose.kmplibs.ui.theme.AppTheme
@@ -45,12 +47,14 @@ fun AdaptiveApp(appState: AppState) {
         layoutType = getNavigationTypeForWindowInfo(windowInfo),
         navigationSuiteItems = {
             AppDestinations.entries.forEach { destination ->
-                item(
-                    icon = { Icon(destination.icon, destination.contentDescription) },
-                    label = { Text(destination.label) },
-                    selected = destination == selectedDestination,
-                    onClick = { selectedDestination = destination }
-                )
+                with(destination) {
+                    item(
+                        icon = { Icon(icon, LocalContext.current.getString(contentDescription))},
+                        label = { Text(LocalContext.current.getString(label)) },
+                        selected = destination == selectedDestination,
+                        onClick = { selectedDestination = destination }
+                    )
+                }
             }
         }
     ) {
@@ -60,7 +64,8 @@ fun AdaptiveApp(appState: AppState) {
     }
 }
 
-enum class AppDestinations(val label: String, val icon: ImageVector, val contentDescription: String, val navDestination: NavDestinations) {
-    Movies("Películas", Icons.Default.Home, "Películas", NavDestinations.Home),
-    Settings("Configuración", Icons.Default.Settings, "Configuración", NavDestinations.Settings);
+
+enum class AppDestinations(val label: Int, val icon: ImageVector, val contentDescription: Int, val navDestination: NavDestinations) {
+    Movies(R.string.movies, Icons.Default.Home, R.string.movies, NavDestinations.Home),
+    Settings(R.string.configuration, Icons.Default.Settings, R.string.configuration, NavDestinations.Settings);
 }

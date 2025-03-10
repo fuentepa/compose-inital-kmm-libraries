@@ -21,7 +21,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,65 +36,42 @@ import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.ui.AppState
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.rememberAppState
+import com.compose.kmplibs.ui.screens.common.ErrorSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
+import com.compose.kmplibs.ui.screens.common.ShowErrorSnackbar
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MoviesScreen(onMovieClick: (Int) -> Unit) {
+fun MoviesScreen(
+    vm: MoviesViewModel = koinViewModel(),
+    onMovieClick: (Int) -> Unit)
+{
     val appState: AppState = rememberAppState()
-
     val snackbarHostState = remember { SnackbarHostState() }
+    val uiState by vm.uiState.collectAsState()
 
     Scaffold(
         topBar = {
             TheTopAppBar( title = { Text(text = stringResource(id = R.string.screen_movies_title)) } )
         },
-       snackbarHost = { SnackbarHost(hostState = snackbarHostState)}
+       snackbarHost = { snackbarHostState.ErrorSnackbarHost() }
     ) { paddingValues ->
-        MoviesContent(
-            onClickItem = onMovieClick,
-            onErrorAction = {
-                LaunchedEffect(Unit) {
-                    with(snackbarHostState) {
-                        currentSnackbarData?.dismiss()
-                        showSnackbar(it)
-                    }
-                }
-            },
-            modifier = Modifier.padding(paddingValues)
-        )
-    }
-}
-
-
-
-@Composable
-fun MoviesContent(
-    onClickItem: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    onErrorAction: @Composable (String) -> Unit = {},
-    vm: MoviesViewModel = koinViewModel(),
-) {
-
-    val uiState by vm.uiState.collectAsState()
-
-    when (uiState) {
-        is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
-        is UIState.Loading -> LoadingCircularIndicator()
-        is UIState.Success -> {
-            (uiState as UIState.Success<List<Movie>>).data.let { movies ->
+        when (uiState) {
+            is UIState.Error -> snackbarHostState.ShowErrorSnackbar((uiState as UIState.Error).error)
+            is UIState.Loading -> LoadingCircularIndicator()
+            is UIState.Success ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
-                    modifier = modifier,
+                    modifier = Modifier.padding(paddingValues),
                     contentPadding = PaddingValues(8.dp)
                 ) {
+                    val movies = (uiState as UIState.Success<List<Movie>>).data
                     items(movies, key = { it.id }) {
-                        MovieItem(movie = it, onClickMovie = { onClickItem(it.id) })
+                        MovieItem(movie = it, onClickMovie = { onMovieClick(it.id) })
                     }
                 }
-            }
         }
     }
 }
@@ -110,6 +86,9 @@ fun MovieItem(
         modifier = modifier
             .clickable(onClick = onClickMovie )
             .padding(4.dp)
+            .semantics {
+                contentDescription = movie.title
+            }
     ) {
         Card {
             LoadImage(
@@ -117,9 +96,6 @@ fun MovieItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.675f) //valor para ajustar la proporcion del poster mas correctamente.
-                    .semantics {
-                        contentDescription = movie.title
-                    }
             )
         }
         Row(

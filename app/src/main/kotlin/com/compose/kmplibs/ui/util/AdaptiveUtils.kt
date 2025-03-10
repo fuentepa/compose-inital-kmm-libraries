@@ -9,7 +9,11 @@ import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
 
 //aqui se pueden cambiar los valores a lo que nos pidan en el proyecto
 fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSuiteType {
-    Log.d("getNavigationTypeForWindowInfo", "with = ${windowInfo.windowSizeClass.windowWidthSizeClass} and height = ${windowInfo.windowSizeClass.windowHeightSizeClass}")
+    Log.d(
+        "getNavigationTypeForWindowInfo",
+        "with = ${windowInfo.windowSizeClass.windowWidthSizeClass} and height = ${windowInfo.windowSizeClass.windowHeightSizeClass}"
+    )
+
     return with(windowInfo) {
         if (
             windowPosture.isTabletop ||
