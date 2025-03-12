@@ -23,7 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.compose.kmplibs.R
 
 @Composable
 fun SnackbarHostState.ShowErrorSnackbar(message: String) {
@@ -89,7 +91,7 @@ fun SnackbarHostState.ErrorSnackbarHost(
                     IconButton(onClick = { snackbarData.dismiss() }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Cerrar",
+                            contentDescription = stringResource(R.string.Close),
                             tint = contentColor
                         )
                     }
@@ -110,6 +112,7 @@ fun SnackbarHostState.ErrorSnackbarHost(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
+
                 Text(snackbarData.visuals.message)
             }
         }
