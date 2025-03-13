@@ -13,6 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.CachePolicy
@@ -27,7 +31,7 @@ fun LoadingCircularIndicator(
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircularProgressIndicator()
         if (withText) {
@@ -42,8 +46,9 @@ fun LoadingCircularIndicator(
 
 @Composable
 fun LoadImage(
-    url : String,
-    modifier: Modifier = Modifier
+    url: String,
+    modifier: Modifier = Modifier,
+    contentImageDescription: String,
 ) {
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
@@ -56,8 +61,10 @@ fun LoadImage(
         loading = {
             LoadingCircularIndicator(withText = false)
         },
-        contentDescription = null,
+        contentDescription = contentImageDescription,
         contentScale = ContentScale.FillWidth,
-        modifier = modifier
+        modifier = modifier.semantics {
+            role = Role.Image
+        }
     )
 }

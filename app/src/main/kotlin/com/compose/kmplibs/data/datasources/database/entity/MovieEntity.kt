@@ -9,7 +9,8 @@ data class MovieEntity(
     @PrimaryKey val id: Int,
     val title: String,
     val overview: String,
-    val posterUrl: String
+    val posterUrl: String,
+    val posterUrlDescription: String
 )
 
 // Funciones de mapeo
@@ -18,7 +19,8 @@ fun MovieEntity.toModel(): Movie {
         id = id,
         title = title,
         overview = overview,
-        posterUrl = posterUrl
+        posterUrl = posterUrl,
+        posterUrlDescription = posterUrlDescription
     )
 }
 
@@ -27,6 +29,7 @@ fun Movie.toEntity(): MovieEntity {
         id = id,
         title = title,
         overview = overview,
-        posterUrl = posterUrl
+        posterUrl = posterUrl,
+        posterUrlDescription = posterUrlDescription
     )
 } 

@@ -14,20 +14,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.data.entity.MovieDetail
@@ -37,7 +33,6 @@ import com.compose.kmplibs.ui.screens.common.ErrorSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.ShowErrorSnackbar
-
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.util.isExpandedScreen
 import org.koin.androidx.compose.koinViewModel
@@ -128,10 +123,8 @@ private fun Header(item: MovieDetail) {
         LoadImage(
             url = "${BuildConfig.TMDB_IMAGE_URL}/w1280${item.backdropUrl}",
             modifier = Modifier
-                .fillMaxWidth()
-                .semantics {
-                    contentDescription = item.title
-                }
+                .fillMaxWidth(),
+            contentImageDescription = item.posterUrlDescription
         )
     }
 }

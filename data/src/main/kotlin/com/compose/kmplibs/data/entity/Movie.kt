@@ -7,6 +7,7 @@ data class Movie (
     val title: String,
     val overview: String,
     val posterUrl: String,
+    val posterUrlDescription: String
 )
 
 fun MovieResponse.map(): Movie {
@@ -15,5 +16,6 @@ fun MovieResponse.map(): Movie {
         title = title,
         overview = overview,
         posterUrl = posterUrl, // TODO: Componer con BaseUrl
+        posterUrlDescription = title
     )
 }

@@ -7,6 +7,7 @@ data class MovieDetail(
     val title: String,
     val overview: String,
     val posterUrl: String,
+    val posterUrlDescription: String,
     val backdropUrl: String,
     val adult: Boolean,
     val releaseDate: String,
@@ -15,7 +16,7 @@ data class MovieDetail(
     val voteCount: Int,
     val tagline: String,
     val runtime: Int,
-    val genres: List<String>
+    val genres: List<String>,
 )
 
 fun MovieDetailResponse.map(): MovieDetail {
@@ -24,6 +25,7 @@ fun MovieDetailResponse.map(): MovieDetail {
         title = title,
         overview = overview,
         posterUrl = posterUrl, // Componer con BaseUrl
+        posterUrlDescription = title,
         backdropUrl = backdropUrl,
         adult = adult,
         releaseDate = releaseDate,

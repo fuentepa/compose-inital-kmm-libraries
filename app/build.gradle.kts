@@ -156,7 +156,8 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.android) //o core si es kotlin solo
+    implementation(libs.koin.android)
+    implementation(libs.androidx.adaptive.android) //o core si es kotlin solo
 
   //  implementation(libs.androidx.material3.adaptive.navigation.suite.android)
   //  implementation(libs.androidx.adaptive.layout.android)

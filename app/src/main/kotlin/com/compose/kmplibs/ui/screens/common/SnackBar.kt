@@ -23,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -75,6 +78,9 @@ fun SnackbarHostState.ErrorSnackbarHost(
             action = snackbarData.visuals.actionLabel?.let { actionLabel ->
                 {
                     TextButton(
+                        modifier = Modifier.semantics {
+                            role = Role.Button
+                        },
                         onClick = { snackbarData.performAction() },
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = contentColor
@@ -86,7 +92,12 @@ fun SnackbarHostState.ErrorSnackbarHost(
             },
             dismissAction = if (snackbarData.visuals.withDismissAction) {
                 {
-                    IconButton(onClick = { snackbarData.dismiss() }) {
+                    IconButton(
+                        onClick = { snackbarData.dismiss() },
+                        modifier = Modifier.semantics {
+                            role = Role.Button
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Cerrar",
