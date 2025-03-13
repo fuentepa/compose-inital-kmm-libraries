@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppNavHost
@@ -49,8 +49,8 @@ fun AdaptiveApp(appState: AppState) {
             AppDestinations.entries.forEach { destination ->
                 with(destination) {
                     item(
-                        icon = { Icon(icon, LocalContext.current.getString(contentDescription))},
-                        label = { Text(LocalContext.current.getString(label)) },
+                        icon = { Icon(icon, stringResource(contentDescription))},
+                        label = { Text(stringResource(label)) },
                         selected = destination == selectedDestination,
                         onClick = { selectedDestination = destination }
                     )
@@ -63,7 +63,6 @@ fun AdaptiveApp(appState: AppState) {
         }
     }
 }
-
 
 enum class AppDestinations(val label: Int, val icon: ImageVector, val contentDescription: Int, val navDestination: NavDestinations) {
     Movies(R.string.movies, Icons.Default.Home, R.string.movies, NavDestinations.Home),
