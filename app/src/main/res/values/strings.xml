@@ -2,6 +2,7 @@
     <string name="app_name">compose-initial-kmm-libraries</string>
     <string name="screen_movies_title">Películas</string>
     <string name="screen_movie_details_title">Detalles de la Pelicula</string>
+    <string name="action_movie_details">Ver detalles de la Pelicula</string>
     <string name="more_options">+ info</string>
     <string name="settings">Ajsutes</string>
     <string name="loading">Cargando…</string>

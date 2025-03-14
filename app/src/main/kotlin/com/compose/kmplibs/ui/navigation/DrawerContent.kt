@@ -68,7 +68,7 @@ fun DrawerContent(
             ) {
                 Row(
                     modifier = Modifier
-                        .clickable { onOptionClick(navItem) }
+                        .clickable(onClickLabel = navItem) { onOptionClick(navItem) }
                         .fillMaxWidth()
                         .padding(8.dp, 4.dp)
                         .clip(RoundedCornerShape(4.dp))
@@ -80,7 +80,7 @@ fun DrawerContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Home,
-                        contentDescription = null
+                        contentDescription = navItem
                     )
 
                     Spacer(modifier = Modifier.width(24.dp))

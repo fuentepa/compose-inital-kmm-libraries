@@ -47,7 +47,7 @@ fun LoadingCircularIndicator(
 fun LoadImage(
     url: String,
     modifier: Modifier = Modifier,
-    contentImageDescription: String,
+    contentImageDescription: String? = null,
 ) {
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
