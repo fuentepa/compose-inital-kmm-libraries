@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,13 +32,11 @@ import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.ui.AppState
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
-import com.compose.kmplibs.ui.rememberAppState
 import com.compose.kmplibs.ui.screens.common.ErrorSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
-import com.compose.kmplibs.ui.screens.common.ShowErrorSnackbar
+import com.compose.kmplibs.ui.screens.common.ShowSnackbar
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,7 +45,7 @@ fun MoviesScreen(
     vm: MoviesViewModel = koinViewModel(),
     onMovieClick: (Int) -> Unit)
 {
-    val appState: AppState = rememberAppState()
+   //val appState: AppState = rememberAppState() //por si se usa un Navigation Drawer
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by vm.uiState.collectAsState()
 
@@ -59,7 +56,7 @@ fun MoviesScreen(
        snackbarHost = { snackbarHostState.ErrorSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowErrorSnackbar((uiState as UIState.Error).error)
+            is UIState.Error -> snackbarHostState.ShowSnackbar((uiState as UIState.Error).error, true)
             is UIState.Loading -> LoadingCircularIndicator()
             is UIState.Success ->
                 LazyVerticalGrid(

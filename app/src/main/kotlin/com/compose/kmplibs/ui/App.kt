@@ -27,9 +27,7 @@ import org.koin.compose.KoinContext
 @Composable
 fun App(appState: AppState = rememberAppState()) {
     KoinContext {
-        AppTheme(
-            darkTheme = appState.darkTheme
-        ) {
+        AppTheme(darkTheme = appState.darkTheme) {
             AdaptiveApp(appState)
         }
     }

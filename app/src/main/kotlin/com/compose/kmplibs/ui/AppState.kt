@@ -38,7 +38,7 @@ class AppState(
     val darkTheme: Boolean = false
 ) {
     companion object {
-        val DRAWER_OPTIONS = listOf("Home", "Settings", "Favorites", "Profile")
+        val DRAWER_OPTIONS = listOf("Home", "Settings", "Favorites", "Profile") //serian los items del navigation drawer
     }
 
     fun onMenuClick() {

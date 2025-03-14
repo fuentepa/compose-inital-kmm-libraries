@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
@@ -23,22 +24,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.R
 
 @Composable
-fun SnackbarHostState.ShowErrorSnackbar(message: String) {
+fun SnackbarHostState.ShowSnackbar(message: String, isError: Boolean = false) {
     if (message.isNotEmpty()) {
         LaunchedEffect(Unit) {
-            with(this@ShowErrorSnackbar) {
+            with(this@ShowSnackbar) {
                 showSnackbar(
-                    SnackbarVisualsWithError(
+                    CustomSnackbarVisuals(
                         message = message,
-                        isError = true
+                        isError = isError
                     )
                 )
             }
@@ -47,7 +48,7 @@ fun SnackbarHostState.ShowErrorSnackbar(message: String) {
 }
 
 // Clase personalizada para visuales de Snackbar con error
-class SnackbarVisualsWithError(
+class CustomSnackbarVisuals(
     override val message: String,
     override val actionLabel: String? = null,
     override val withDismissAction: Boolean = false,
@@ -64,7 +65,7 @@ fun SnackbarHostState.ErrorSnackbarHost(
         hostState = this,
         modifier = modifier,
     ) { snackbarData ->
-        val isError = (snackbarData.visuals as? SnackbarVisualsWithError)?.isError == true
+        val isError = (snackbarData.visuals as? CustomSnackbarVisuals)?.isError == true
         val backgroundColor = if (isError)
             MaterialTheme.colorScheme.error
         else
@@ -115,14 +116,20 @@ fun SnackbarHostState.ErrorSnackbarHost(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (isError) {
+                if (isError)
                     Icon(
                         imageVector = Icons.Filled.Warning, // o Icons.Filled.Info
                         contentDescription = "Error",
                         tint = contentColor
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
+                else
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = "Exito",
+                        tint = contentColor
+                    )
+
+                Spacer(modifier = Modifier.width(8.dp))
 
                 Text(snackbarData.visuals.message)
             }

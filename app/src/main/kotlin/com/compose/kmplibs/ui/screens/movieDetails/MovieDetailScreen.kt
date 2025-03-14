@@ -32,7 +32,7 @@ import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.ErrorSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
-import com.compose.kmplibs.ui.screens.common.ShowErrorSnackbar
+import com.compose.kmplibs.ui.screens.common.ShowSnackbar
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.util.isExpandedScreen
 import org.koin.androidx.compose.koinViewModel
@@ -60,7 +60,7 @@ fun MovieDetailScreen(
         snackbarHost = { snackbarHostState.ErrorSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowErrorSnackbar((uiState as UIState.Error).error)
+            is UIState.Error -> snackbarHostState.ShowSnackbar((uiState as UIState.Error).error, true)
             is UIState.Loading -> LoadingCircularIndicator()
             is UIState.Success -> {
                 (uiState as UIState.Success).data?.let { movieDetail ->
