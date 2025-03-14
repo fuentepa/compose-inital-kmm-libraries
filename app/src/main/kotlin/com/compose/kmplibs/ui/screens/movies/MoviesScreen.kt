@@ -81,7 +81,9 @@ fun MovieItem(
 ) {
     Column(
         modifier = modifier
-            .clickable(onClick = onClickMovie )
+            .clickable(
+                onClickLabel = stringResource(R.string.action_movie_details),
+                onClick = onClickMovie )
             .padding(4.dp)
             .semantics {
                 contentDescription = movie.title
