@@ -33,7 +33,7 @@ import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
-import com.compose.kmplibs.ui.screens.common.ErrorSnackbarHost
+import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.ShowSnackbar
@@ -53,7 +53,7 @@ fun MoviesScreen(
         topBar = {
             TheTopAppBar( title = { Text(text = stringResource(id = R.string.screen_movies_title)) } )
         },
-       snackbarHost = { snackbarHostState.ErrorSnackbarHost() }
+       snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
             is UIState.Error -> snackbarHostState.ShowSnackbar((uiState as UIState.Error).error, true)

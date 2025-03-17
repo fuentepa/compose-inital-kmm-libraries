@@ -58,7 +58,7 @@ class CustomSnackbarVisuals(
 
 // Snackbar Host personalizado
 @Composable
-fun SnackbarHostState.ErrorSnackbarHost(
+fun SnackbarHostState.CustomSnackbarHost(
     modifier: Modifier = Modifier
 ) {
     SnackbarHost(

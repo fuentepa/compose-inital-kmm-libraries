@@ -1,6 +1,7 @@
 package com.compose.kmplibs.ui.screens.settings
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
+import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
@@ -48,7 +50,7 @@ fun SettingsScreen()
                 title = { Text(stringResource(R.string.configuration)) },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
 
         SettingsContent(
@@ -67,9 +69,9 @@ fun SettingsScreen()
 
 @Composable
 fun SettingsContent(
+    modifier: Modifier = Modifier,
     onErrorAction: @Composable (String) -> Unit = {},
-    viewModel: SettingsViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -107,6 +109,7 @@ private fun BodyContent(
     ) {
 
         Card(
+            onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(
@@ -126,7 +129,7 @@ private fun BodyContent(
                     )
 
                     Text(
-                        text = "Modo Oscuro",
+                        text = stringResource(R.string.dark_mode),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(start = 16.dp)
                     )
