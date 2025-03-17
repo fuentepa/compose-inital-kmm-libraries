@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -82,6 +83,7 @@ fun MovieItem(
 ) {
     Column(
         modifier = modifier
+            .minimumInteractiveComponentSize()
             .clickable(
                 onClickLabel = stringResource(R.string.action_movie_details),
                 onClick = onClickMovie )
@@ -110,7 +112,9 @@ fun MovieItem(
                     .padding(4.dp, dimensionResource(R.dimen.item_padding_half))
                     .weight(1f)
             )
-            IconButton(onClick = onClickMovie) {
+            IconButton(
+                modifier = Modifier.minimumInteractiveComponentSize(),
+                onClick = onClickMovie) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = null

@@ -20,6 +20,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,8 +42,7 @@ import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreen()
-{
+fun SettingsScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -111,7 +111,10 @@ private fun BodyContent(
 
         Card(
             onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .minimumInteractiveComponentSize()
+
         ) {
             Row(
                 modifier = Modifier
@@ -137,9 +140,11 @@ private fun BodyContent(
                 }
 
                 Switch(
-                    modifier = Modifier.semantics {
-                        role = Role.Switch
-                    },
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .semantics {
+                            role = Role.Switch
+                        },
                     checked = isDarkMode,
                     onCheckedChange = { onDarkModeToggle() }
                 )

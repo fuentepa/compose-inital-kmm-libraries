@@ -9,11 +9,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
@@ -47,6 +49,7 @@ fun AdaptiveApp(appState: AppState) {
             AppDestinations.entries.forEach { destination ->
                 with(destination) {
                     item(
+                        modifier = Modifier.minimumInteractiveComponentSize(),
                         icon = { Icon(icon, stringResource(contentDescription))},
                         label = { Text(stringResource(label)) },
                         selected = destination == selectedDestination,
