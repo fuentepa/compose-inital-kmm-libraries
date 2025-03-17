@@ -56,7 +56,7 @@ fun LoadImage(
             .crossfade(true)
             .diskCachePolicy(CachePolicy.ENABLED)
             .build(),
-        //model = "${BuildConfig.TMDB_IMAGE_URL}${movie.posterUrl}",
+        //model = "${BuildConfig.TMDB_IMAGE_URL}${movie.posterUrl}", //esto es para ver que hay otras opciones para mostrar imagenes
         loading = {
             LoadingCircularIndicator(withText = false)
         },

@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -105,7 +106,7 @@ private fun BodyContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.screen_padding))
     ) {
 
         Card(
@@ -115,7 +116,7 @@ private fun BodyContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(dimensionResource(R.dimen.item_padding)),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -131,7 +132,7 @@ private fun BodyContent(
                     Text(
                         text = stringResource(R.string.dark_mode),
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(start = 16.dp)
+                        modifier = Modifier.padding(start = dimensionResource(R.dimen.item_padding))
                     )
                 }
 

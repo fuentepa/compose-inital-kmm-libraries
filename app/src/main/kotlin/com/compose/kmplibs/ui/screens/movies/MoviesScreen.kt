@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -62,7 +63,7 @@ fun MoviesScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
                     modifier = Modifier.padding(paddingValues),
-                    contentPadding = PaddingValues(8.dp)
+                    contentPadding = PaddingValues(dimensionResource(R.dimen.item_padding))
                 ) {
                     val movies = (uiState as UIState.Success<List<Movie>>).data
                     items(movies, key = { it.id }) {
@@ -106,7 +107,7 @@ fun MovieItem(
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 modifier = Modifier
-                    .padding(4.dp, 8.dp)
+                    .padding(4.dp, dimensionResource(R.dimen.item_padding_half))
                     .weight(1f)
             )
             IconButton(onClick = onClickMovie) {

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,14 +20,18 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
+import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
@@ -45,8 +51,16 @@ fun MovieDetailScreen(
     onBack: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val title by rememberSaveable { mutableStateOf("")  }
+    var title by rememberSaveable { mutableStateOf("") }
     val uiState by vm.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+        if (uiState is UIState.Success) {
+            (uiState as UIState.Success).data?.let { movieDetail ->
+                title = movieDetail.title
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -79,26 +93,28 @@ fun MovieDetailsContent(
     movieDetail: MovieDetail,
     modifier: Modifier = Modifier
 ) {
-    if (isExpandedScreen(currentWindowAdaptiveInfo())) {
-        Column(
+    val isExpanded = isExpandedScreen(currentWindowAdaptiveInfo())
+
+    if (isExpanded) {
+        Row(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-        ) {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .weight(0.4f)
-                ) {
-                    Header(item = movieDetail)
-                }
+                .padding(0.dp, 0.dp)
 
-                Box(
-                    modifier = Modifier
-                        .weight(0.6f)
-                ) {
-                    Body(item = movieDetail)
-                }
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(0.275f)
+            ) {
+                Header(item = movieDetail, isExpanded)
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(0.725f)
+            ) {
+                Body(item = movieDetail)
             }
         }
     } else {
@@ -107,23 +123,30 @@ fun MovieDetailsContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Header(item = movieDetail)
-            Spacer(modifier = Modifier.height(16.dp))
+            Header(item = movieDetail, isExpanded)
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_high)))
             Body(item = movieDetail)
         }
     }
 }
 
 @Composable
-private fun Header(item: MovieDetail) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
+private fun Header(item: MovieDetail, isExpanded: Boolean = false) {
+    if (isExpanded) {
+        LoadImage(
+            url = "${BuildConfig.TMDB_IMAGE_URL}/w500${item.posterUrl}", // el 500 es para forzar un ancho y no traernos algo que pese muchisimo.
+            contentImageDescription = item.posterUrlDescription,
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(0.7f) //valor para ajustar la proporcion del poster mas correctamente.
+                .padding(dimensionResource(R.dimen.screen_padding))
+        )
+    } else {
         LoadImage(
             url = "${BuildConfig.TMDB_IMAGE_URL}/w1280${item.backdropUrl}",
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.screen_padding)),
             contentImageDescription = item.posterUrlDescription
         )
     }
