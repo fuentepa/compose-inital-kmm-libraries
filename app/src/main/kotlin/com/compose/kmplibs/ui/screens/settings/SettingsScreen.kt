@@ -30,6 +30,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.compose.kmplibs.R
@@ -149,7 +150,9 @@ private fun BodyContent(
 
                 Switch(
                     modifier = Modifier
-                        .minimumInteractiveComponentSize(),
+                        .minimumInteractiveComponentSize().semantics {
+                            invisibleToUser()
+                        },
                     checked = isDarkMode,
                     onCheckedChange = { onDarkModeToggle() }
                 )
