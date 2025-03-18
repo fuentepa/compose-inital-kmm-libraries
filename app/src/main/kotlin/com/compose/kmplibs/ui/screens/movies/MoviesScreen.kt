@@ -88,7 +88,7 @@ fun MovieItem(
                 onClickLabel = stringResource(R.string.action_movie_details),
                 onClick = onClickMovie )
             .padding(4.dp)
-            .semantics {
+            .semantics(mergeDescendants = true) {
                 contentDescription = movie.title
             }
     ) {
@@ -112,14 +112,6 @@ fun MovieItem(
                     .padding(4.dp, dimensionResource(R.dimen.item_padding_half))
                     .weight(1f)
             )
-            IconButton(
-                modifier = Modifier.minimumInteractiveComponentSize(),
-                onClick = onClickMovie) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = null
-                )
-            }
         }
     }
 }

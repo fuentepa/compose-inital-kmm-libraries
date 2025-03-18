@@ -12,4 +12,6 @@
     <string name="select_movie_message">Selecciona una película para ver sus detalles</string>
     <string name="movies">Películas</string>
     <string name="Close">Cerrar</string>
+    <string name="dark_mode_enabled">Modo oscuro activado</string>
+    <string name="dark_mode_disabled">Modo oscuro desactivado</string>
 </resources>

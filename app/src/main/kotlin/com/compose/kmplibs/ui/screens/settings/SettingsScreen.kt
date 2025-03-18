@@ -1,7 +1,6 @@
 package com.compose.kmplibs.ui.screens.settings
 
 import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -31,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
@@ -103,6 +101,12 @@ private fun BodyContent(
     isDarkMode: Boolean,
     onDarkModeToggle: () -> Unit
 ) {
+    val darkModeEnabledText = stringResource(
+        id = if (isDarkMode)
+            R.string.dark_mode_enabled
+        else
+            R.string.dark_mode_disabled
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,6 +116,10 @@ private fun BodyContent(
         Card(
             onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
             modifier = Modifier
+                .semantics(mergeDescendants = true) {
+                    role = Role.Switch
+                    contentDescription = darkModeEnabledText
+                }
                 .fillMaxWidth()
                 .minimumInteractiveComponentSize()
 
@@ -141,10 +149,7 @@ private fun BodyContent(
 
                 Switch(
                     modifier = Modifier
-                        .minimumInteractiveComponentSize()
-                        .semantics {
-                            role = Role.Switch
-                        },
+                        .minimumInteractiveComponentSize(),
                     checked = isDarkMode,
                     onCheckedChange = { onDarkModeToggle() }
                 )
