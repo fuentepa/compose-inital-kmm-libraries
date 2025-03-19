@@ -19,12 +19,12 @@ fun TheTopAppBar(
     navigationIcon: @Composable (() -> Unit) = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    val contentTitleDescrption = "${stringResource(R.string.screen_movie_details_title)}: $title"
+    val contentTitleDescription = "${stringResource(R.string.screen_movie_details_title)}: $title"
     TopAppBar(
         title = title,
         modifier = modifier.semantics {
             heading()
-            contentDescription = contentTitleDescrption
+            contentDescription = contentTitleDescription
         },
         navigationIcon = navigationIcon,
         actions = actions
