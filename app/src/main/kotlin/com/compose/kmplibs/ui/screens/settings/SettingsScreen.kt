@@ -74,9 +74,7 @@ fun SettingsContent(
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
     Log.d("TAG", "-> SettingsContent: state = $uiState")
-
     when (uiState) {
         is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
         is UIState.Loading -> LoadingCircularIndicator()
@@ -113,7 +111,6 @@ private fun BodyContent(
             .fillMaxSize()
             .padding(dimensionResource(R.dimen.screen_padding))
     ) {
-
         Card(
             onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
             modifier = Modifier
@@ -123,7 +120,6 @@ private fun BodyContent(
                 }
                 .fillMaxWidth()
                 .minimumInteractiveComponentSize()
-
         ) {
             Row(
                 modifier = Modifier
@@ -147,7 +143,6 @@ private fun BodyContent(
                         modifier = Modifier.padding(start = dimensionResource(R.dimen.item_padding))
                     )
                 }
-
                 Switch(
                     modifier = Modifier
                         .minimumInteractiveComponentSize().semantics {
