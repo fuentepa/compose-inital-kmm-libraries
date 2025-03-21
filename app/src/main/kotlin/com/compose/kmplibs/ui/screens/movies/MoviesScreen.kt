@@ -41,21 +41,28 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MoviesScreen(
     vm: MoviesViewModel = koinViewModel(),
-    onMovieClick: (Int) -> Unit)
-{
-   //val appState: AppState = rememberAppState() //por si se usa un Navigation Drawer
+    onMovieClick: (Int) -> Unit
+) {
+    //val appState: AppState = rememberAppState() //por si se usa un Navigation Drawer
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by vm.uiState.collectAsState()
 
     Scaffold(
         topBar = {
-            TheTopAppBar( title = { Text(text = stringResource(id = R.string.screen_movies_title)) } )
+            TheTopAppBar(title = { Text(text = stringResource(id = R.string.screen_movies_title)) })
         },
-       snackbarHost = { snackbarHostState.CustomSnackbarHost() }
+        snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowSnackbar((uiState as UIState.Error).error, true)
-            is UIState.Loading -> LoadingCircularIndicator()
+            is UIState.Error -> snackbarHostState.ShowSnackbar(
+                (uiState as UIState.Error).error,
+                true
+            )
+            is UIState.Loading -> LoadingCircularIndicator(
+                contentLoadingDescription = stringResource(
+                    R.string.loading_description_movie_list
+                )
+            )
             is UIState.Success ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(160.dp),
@@ -74,7 +81,7 @@ fun MoviesScreen(
 @Composable
 fun MovieItem(
     movie: Movie,
-    onClickMovie:  () -> Unit,
+    onClickMovie: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -82,7 +89,8 @@ fun MovieItem(
             .minimumInteractiveComponentSize()
             .clickable(
                 onClickLabel = stringResource(R.string.action_movie_details),
-                onClick = onClickMovie )
+                onClick = onClickMovie
+            )
             .padding(4.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = movie.title

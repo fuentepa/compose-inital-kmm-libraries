@@ -44,14 +44,11 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        topBar = {
-            TheTopAppBar(
-                title = { Text(stringResource(R.string.configuration)) },
-            )
-        },
-        snackbarHost = { snackbarHostState.CustomSnackbarHost() }
-    ) { paddingValues ->
+    Scaffold(topBar = {
+        TheTopAppBar(
+            title = { Text(stringResource(R.string.configuration)) },
+        )
+    }, snackbarHost = { snackbarHostState.CustomSnackbarHost() }) { paddingValues ->
 
         SettingsContent(
             onErrorAction = {
@@ -61,8 +58,7 @@ fun SettingsScreen() {
                         showSnackbar(it)
                     }
                 }
-            },
-            modifier = Modifier.padding(paddingValues)
+            }, modifier = Modifier.padding(paddingValues)
         )
     }
 }
@@ -77,7 +73,7 @@ fun SettingsContent(
     Log.d("TAG", "-> SettingsContent: state = $uiState")
     when (uiState) {
         is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
-        is UIState.Loading -> LoadingCircularIndicator()
+        is UIState.Loading -> LoadingCircularIndicator(contentLoadingDescription = stringResource(R.string.loading_description_settings))
         is UIState.Success -> {
             (uiState as UIState.Success).data.let {
                 Column(
@@ -85,10 +81,8 @@ fun SettingsContent(
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    BodyContent(
-                        isDarkMode = it.isDarkMode,
-                        onDarkModeToggle = { viewModel.toggleDarkMode() }
-                    )
+                    BodyContent(isDarkMode = it.isDarkMode,
+                        onDarkModeToggle = { viewModel.toggleDarkMode() })
                 }
             }
         }
@@ -97,30 +91,26 @@ fun SettingsContent(
 
 @Composable
 private fun BodyContent(
-    isDarkMode: Boolean,
-    onDarkModeToggle: () -> Unit
+    isDarkMode: Boolean, onDarkModeToggle: () -> Unit
 ) {
     val darkModeEnabledText = stringResource(
-        id = if (isDarkMode)
-            R.string.dark_mode_enabled
-        else
-            R.string.dark_mode_disabled
+        id = if (isDarkMode) R.string.dark_mode_enabled
+        else R.string.dark_mode_disabled
     )
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(R.dimen.screen_padding))
+            .padding(dimensionResource(R.dimen.screen_padding)
+            )
     ) {
-        Card(
-            onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
+        Card(onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
             modifier = Modifier
                 .semantics(mergeDescendants = true) {
                     role = Role.Switch
                     contentDescription = darkModeEnabledText
                 }
                 .fillMaxWidth()
-                .minimumInteractiveComponentSize()
-        ) {
+                .minimumInteractiveComponentSize()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,14 +133,11 @@ private fun BodyContent(
                         modifier = Modifier.padding(start = dimensionResource(R.dimen.item_padding))
                     )
                 }
-                Switch(
-                    modifier = Modifier
-                        .minimumInteractiveComponentSize().semantics {
-                            invisibleToUser()
-                        },
-                    checked = isDarkMode,
-                    onCheckedChange = { onDarkModeToggle() }
-                )
+                Switch(modifier = Modifier
+                    .minimumInteractiveComponentSize()
+                    .semantics {
+                        invisibleToUser()
+                    }, checked = isDarkMode, onCheckedChange = { onDarkModeToggle() })
             }
         }
     }

@@ -14,4 +14,10 @@
     <string name="Close">Cerrar</string>
     <string name="dark_mode_enabled">Modo oscuro activado</string>
     <string name="dark_mode_disabled">Modo oscuro desactivado</string>
+    <string name="back_button_description">Botón atrás</string>
+    <string name="loading_description_movie_details">Cargando detalles de la película</string>
+    <string name="loading_description_movie_list">Cargando la lista de películas</string>
+    <string name="loading_description_settings">Cargando configuración</string>
+    <string name="movie_overview_section">Sección detalle de la película</string>
+    <string name="no_overview_available">No hay descripción disponible</string>
 </resources>

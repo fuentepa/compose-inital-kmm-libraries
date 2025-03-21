@@ -30,6 +30,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
@@ -64,19 +68,33 @@ fun MovieDetailScreen(
     }
 
     Scaffold(
+        modifier = Modifier.semantics {
+            liveRegion = LiveRegionMode.Polite
+        },
         topBar = {
             TheTopAppBar(
                 title = { Text(text = title) },
                 navigationIcon = {
-                    AppBarIcon( imageVector = Icons.Default.ArrowBack, onClick = onBack )
+                    AppBarIcon(
+                        imageVector = Icons.Default.ArrowBack,
+                        onClick = onBack,
+                        contentDescription = stringResource(R.string.back_button_description)
+                    )
                 }
             )
         },
         snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowSnackbar((uiState as UIState.Error).error, true)
-            is UIState.Loading -> LoadingCircularIndicator()
+            is UIState.Error -> snackbarHostState.ShowSnackbar(
+                (uiState as UIState.Error).error,
+                true
+            )
+
+            is UIState.Loading -> {
+                LoadingCircularIndicator(contentLoadingDescription = stringResource(R.string.loading_description_movie_details))
+            }
+
             is UIState.Success -> {
                 (uiState as UIState.Success).data?.let { movieDetail ->
                     MovieDetailsContent(
@@ -155,15 +173,25 @@ private fun Header(item: MovieDetail, isExpanded: Boolean = false) {
 
 @Composable
 private fun Body(item: MovieDetail) {
+    val sectionDescription = stringResource(R.string.movie_overview_section)
+    val emptyOverView = stringResource(R.string.no_overview_available)
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics {
+                contentDescription = sectionDescription
+            }
+
     ) {
         Text(
             text = item.overview,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp, 0.dp)
+                .semantics {
+                    if (item.overview.isBlank()) {
+                        contentDescription = emptyOverView
+                    }
+                }
         )
-        //Spacer(modifier = Modifier.height(16.dp))
     }
 }
