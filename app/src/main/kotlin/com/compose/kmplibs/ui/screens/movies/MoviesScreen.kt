@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -88,25 +89,24 @@ fun MovieItem(
         modifier = modifier
             .minimumInteractiveComponentSize()
             .clickable(
-                onClickLabel = stringResource(R.string.action_movie_details),
                 onClick = onClickMovie
             )
             .padding(4.dp)
-            .semantics(mergeDescendants = true) {
+            .clearAndSetSemantics {
                 contentDescription = movie.title
             }
     ) {
         Card {
             LoadImage(
                 url = "${BuildConfig.TMDB_IMAGE_URL}/w500${movie.posterUrl}", // el 500 es para forzar un ancho y no traernos algo que pese muchisimo.
-                contentImageDescription = movie.posterUrlDescription,
+                contentImageDescription = "",
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.675f) //valor para ajustar la proporcion del poster mas correctamente.
             )
         }
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = movie.title,
@@ -114,7 +114,9 @@ fun MovieItem(
                 maxLines = 2,
                 modifier = Modifier
                     .padding(4.dp, dimensionResource(R.dimen.item_padding_half))
-                    .weight(1f)
+                    .weight(1f).semantics {
+                        contentDescription = ""
+                    }
             )
         }
     }
