@@ -19,7 +19,7 @@ room {
 android {
     namespace = "com.compose.kmplibs"
     compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "com.compose.kmplibs"
