@@ -3,10 +3,10 @@ agp = "8.8.2"
 kotlin = "2.1.20"
 androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
-androidx-core-ktx = "1.15.0"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-test-junit = "1.2.1"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
 junit = "4.13.2"
 lifecycleRuntimeKtx = "2.8.7"
 ksp_version = "2.1.20-1.0.31"
@@ -18,8 +18,8 @@ ktor = "3.1.2"
 datastore-version = "1.1.4"
 coil = "3.1.0"
 navigation-compose = "2.8.9"
-room = "2.7.0-rc03"
-material3 = "1.3.1"
+androidx-room = "2.7.0"
+material3 = "1.3.2"
 adaptiveAndroid = "1.1.0"
 
 [libraries]
@@ -71,9 +71,9 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" } #como ya tenemos ktor3, dejamos que se use ktor para las llamadas de red y asi no tenemos mas de una libreria.
 
-androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 
 androidx-material3-adaptive-navigation-suite-android = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite-android", version.ref = "material3" }
 androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptiveAndroid" }
@@ -86,4 +86,4 @@ kotlinxserialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-androidx-room = { id = "androidx.room", version.ref = "room" }
+androidx-room = { id = "androidx.room", version.ref = "androidx-room" }

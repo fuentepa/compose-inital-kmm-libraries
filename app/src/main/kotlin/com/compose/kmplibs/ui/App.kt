@@ -19,6 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
+import coil3.ImageLoader
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.request.CachePolicy
+import coil3.request.crossfade
+import coil3.util.DebugLogger
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.AppNavHost
 import com.compose.kmplibs.ui.navigation.NavDestinations
@@ -30,6 +35,13 @@ import org.koin.compose.KoinContext
 fun App(appState: AppState = rememberAppState()) {
     KoinContext {
         AppTheme(darkTheme = appState.darkTheme) {
+            setSingletonImageLoaderFactory { context ->
+                ImageLoader.Builder(context)
+                    .crossfade(true)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .logger(DebugLogger())
+                    .build()
+            }
             AdaptiveApp(appState)
         }
     }

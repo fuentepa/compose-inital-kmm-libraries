@@ -20,16 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import coil3.request.CachePolicy
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.compose.kmplibs.R
 
 @Composable
@@ -90,13 +86,7 @@ fun LoadImage(
     contentImageDescription: String? = null,
 ) {
     SubcomposeAsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(url)
-            // .addHeader("Authorization", "Bearer ${BuildConfig.ACCESS_TOKEN}")
-            .crossfade(true)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .build(),
-        //model = "${BuildConfig.TMDB_IMAGE_URL}${movie.posterUrl}", //esto es para ver que hay otras opciones para mostrar imagenes
+        model = url,
         loading = {
             LoadingCircularIndicator(withText = false)
         },
