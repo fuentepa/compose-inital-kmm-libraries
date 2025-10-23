@@ -1,25 +1,26 @@
 [versions]
 agp = "8.13.0"
-kotlin = "2.1.20"
-androidx-activityCompose = "1.10.1"
-androidx-appcompat = "1.7.0"
-androidx-core-ktx = "1.16.0"
-androidx-espresso-core = "3.6.1"
-androidx-test-junit = "1.2.1"
-composeBom = "2025.04.00"
+kotlin = "2.2.20"
+androidx-activityCompose = "1.11.0"
+androidx-appcompat = "1.7.1"
+androidx-core-ktx = "1.17.0"
+androidx-espresso-core = "3.7.0"
+androidx-test-junit = "1.3.0"
+composeBom = "2025.10.00"
 junit = "4.13.2"
-lifecycleRuntimeKtx = "2.8.7"
-ksp_version = "2.1.20-1.0.31"
-koin-bom = "4.0.4" # koin version
-koin-annotations-bom = "2.0.0" # koin ksp version
-ktorfit = "2.5.0"
-ktorfit-ksp = "2.5.0"
-ktor = "3.1.2"
-datastore-version = "1.1.4"
-coil = "3.1.0"
-navigation-compose = "2.8.9"
-androidx-room = "2.7.0"
-material3 = "1.3.2"
+lifecycleRuntimeKtx = "2.9.4"
+ksp_version = "2.2.20-2.0.3"
+koin-bom = "4.1.1" # koin version
+koin-annotations-bom = "2.3.0" # koin ksp version
+ktorfit = "2.6.4"
+ktorfit-ksp = "2.6.4"
+ktor = "3.3.1"
+datastore-version = "1.1.7"
+coil = "3.3.0"
+navigation-compose = "2.9.5"
+androidx-room = "2.8.2"
+material3 = "1.4.0"
+materialIcons = "1.7.8"
 adaptiveAndroid = "1.1.0"
 
 [libraries]
@@ -40,9 +41,10 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx" , name = "kotlinx-serialization-json" , version = "1.8.1" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx" , name = "kotlinx-serialization-json" , version = "1.9.0" }
 
 koin-annotations-bom = { group = "io.insert-koin", name = "koin-annotations-bom", version.ref = "koin-annotations-bom" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annotations-bom"}
@@ -56,7 +58,7 @@ koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-nav
 koin-test = { group = "io.insert-koin", name = "koin-test"}
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4"}
 
-io-arrow = { group = "io.arrow-kt", name = "arrow-core", version = "2.0.1" }
+io-arrow = { group = "io.arrow-kt", name = "arrow-core", version = "2.1.2" }
 
 ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfit-ksp" }
 ktorfit-lib = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
