@@ -32,18 +32,19 @@ import com.compose.kmplibs.ui.util.getNavigationTypeForWindowInfo
 import org.koin.compose.KoinContext
 
 @Composable
-fun App(appState: AppState = rememberAppState()) {
-    KoinContext {
-        AppTheme(darkTheme = appState.darkTheme) {
-            setSingletonImageLoaderFactory { context ->
-                ImageLoader.Builder(context)
-                    .crossfade(true)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .logger(DebugLogger())
-                    .build()
-            }
-            AdaptiveApp(appState)
+fun App(
+    initialDarkTheme: Boolean? = null,
+    appState: AppState = rememberAppState(initialDarkTheme = initialDarkTheme)
+)   {
+    AppTheme(darkTheme = appState.darkTheme) {
+        setSingletonImageLoaderFactory { context ->
+            ImageLoader.Builder(context)
+                .crossfade(true)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .logger(DebugLogger())
+                .build()
         }
+        AdaptiveApp(appState)
     }
 }
 

@@ -17,7 +17,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,25 +27,41 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.entity.Movie
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
+import com.compose.kmplibs.ui.screens.common.CustomSnackbarVisuals
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
-import com.compose.kmplibs.ui.screens.common.ShowSnackbar
+import com.compose.kmplibs.ui.screens.common.ObserveAsEvents
+import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MoviesScreen(
-    vm: MoviesViewModel = koinViewModel(),
+    viewModel: MoviesViewModel = koinViewModel(),
     onMovieClick: (Int) -> Unit
 ) {
     //val appState: AppState = rememberAppState() //por si se usa un Navigation Drawer
     val snackbarHostState = remember { SnackbarHostState() }
-    val uiState by vm.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is Event.OnError -> {
+                snackbarHostState.showSnackbar(
+                    CustomSnackbarVisuals(
+                        message = event.message,
+                        isError = true
+                    )
+                )
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -55,10 +70,6 @@ fun MoviesScreen(
         snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
         when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowSnackbar(
-                (uiState as UIState.Error).error,
-                true
-            )
             is UIState.Loading -> LoadingCircularIndicator(
                 contentLoadingDescription = stringResource(
                     R.string.loading_description_movie_list

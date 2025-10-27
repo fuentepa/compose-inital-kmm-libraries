@@ -41,9 +41,11 @@ import com.compose.kmplibs.data.entity.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
+import com.compose.kmplibs.ui.screens.common.CustomSnackbarVisuals
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
-import com.compose.kmplibs.ui.screens.common.ShowSnackbar
+import com.compose.kmplibs.ui.screens.common.ObserveAsEvents
+import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.util.isExpandedScreen
 import org.koin.androidx.compose.koinViewModel
@@ -52,12 +54,12 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun MovieDetailScreen(
     movieId: Int,
-    vm: MovieDetailViewModel = koinViewModel { parametersOf(movieId) },
+    viewModel: MovieDetailViewModel = koinViewModel { parametersOf(movieId) },
     onBack: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var title by rememberSaveable { mutableStateOf("") }
-    val uiState by vm.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState) {
         if (uiState is UIState.Success) {
@@ -85,16 +87,24 @@ fun MovieDetailScreen(
         },
         snackbarHost = { snackbarHostState.CustomSnackbarHost() }
     ) { paddingValues ->
-        when (uiState) {
-            is UIState.Error -> snackbarHostState.ShowSnackbar(
-                (uiState as UIState.Error).error,
-                true
-            )
 
+        ObserveAsEvents(viewModel.events) { event ->
+            when(event) {
+                is Event.OnError -> {
+                    snackbarHostState.showSnackbar(
+                        CustomSnackbarVisuals(
+                            message = event.message,
+                            isError = true
+                        )
+                    )
+                }
+            }
+        }
+
+        when (uiState) {
             is UIState.Loading -> {
                 LoadingCircularIndicator(contentLoadingDescription = stringResource(R.string.loading_description_movie_details))
             }
-
             is UIState.Success -> {
                 (uiState as UIState.Success).data?.let { movieDetail ->
                     MovieDetailsContent(

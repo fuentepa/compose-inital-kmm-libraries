@@ -20,7 +20,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -30,59 +29,69 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.compose.kmplibs.R
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
+import com.compose.kmplibs.ui.screens.common.CustomSnackbarVisuals
+import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
+import com.compose.kmplibs.ui.screens.common.ObserveAsEvents
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreen() {
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(topBar = {
-        TheTopAppBar(
-            title = { Text(stringResource(R.string.configuration)) },
-        )
-    }, snackbarHost = { snackbarHostState.CustomSnackbarHost() }) { paddingValues ->
-
-        SettingsContent(
-            onErrorAction = {
-                LaunchedEffect(Unit) {
-                    with(snackbarHostState) {
-                        currentSnackbarData?.dismiss()
-                        showSnackbar(it)
-                    }
-                }
-            }, modifier = Modifier.padding(paddingValues)
-        )
-    }
-}
-
-@Composable
-fun SettingsContent(
-    modifier: Modifier = Modifier,
-    onErrorAction: @Composable (String) -> Unit = {},
+fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel()
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
-    Log.d("TAG", "-> SettingsContent: state = $uiState")
-    when (uiState) {
-        is UIState.Error -> onErrorAction((uiState as UIState.Error).error)
-        is UIState.Loading -> LoadingCircularIndicator(contentLoadingDescription = stringResource(R.string.loading_description_settings))
-        is UIState.Success -> {
-            (uiState as UIState.Success).data.let {
-                Column(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    BodyContent(isDarkMode = it.isDarkMode,
-                        onDarkModeToggle = { viewModel.toggleDarkMode() })
+
+    // Observar eventos y manejarlos aquí (contexto suspend)
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is Event.OnError -> {
+                snackbarHostState.showSnackbar(
+                    CustomSnackbarVisuals(
+                        message = event.message,
+                        isError = true
+                    )
+                )
+            }
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TheTopAppBar(
+                title = { Text(stringResource(R.string.configuration)) },
+            )
+        },
+        snackbarHost = { snackbarHostState.CustomSnackbarHost() } //quizas sobre, por usarse el CustomSnackbarHost directamente arriba
+    ) { paddingValues ->
+        Log.d("TAG", "-> SettingsScreen: state = $uiState")
+        
+        when (uiState) {
+            is UIState.Loading -> {
+                LoadingCircularIndicator(
+                    contentLoadingDescription = stringResource(R.string.loading_description_settings)
+                )
+            }
+            is UIState.Success -> {
+                (uiState as UIState.Success).data.let { settingsState ->
+                    Column(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        BodyContent(
+                            isDarkMode = settingsState.isDarkMode,
+                            onDarkModeToggle = { viewModel.toggleDarkMode() }
+                        )
+                    }
                 }
             }
         }
@@ -91,7 +100,8 @@ fun SettingsContent(
 
 @Composable
 private fun BodyContent(
-    isDarkMode: Boolean, onDarkModeToggle: () -> Unit
+    isDarkMode: Boolean, 
+    onDarkModeToggle: () -> Unit
 ) {
     val darkModeEnabledText = stringResource(
         id = if (isDarkMode) R.string.dark_mode_enabled
@@ -100,17 +110,18 @@ private fun BodyContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(R.dimen.screen_padding)
-            )
+            .padding(dimensionResource(R.dimen.screen_padding))
     ) {
-        Card(onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
+        Card(
+            onClick = { onDarkModeToggle() }, //recomendado poner aqui por accesibilidad
             modifier = Modifier
                 .semantics(mergeDescendants = true) {
                     role = Role.Switch
                     contentDescription = darkModeEnabledText
                 }
                 .fillMaxWidth()
-                .minimumInteractiveComponentSize()) {
+                .minimumInteractiveComponentSize()
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,11 +144,15 @@ private fun BodyContent(
                         modifier = Modifier.padding(start = dimensionResource(R.dimen.item_padding))
                     )
                 }
-                Switch(modifier = Modifier
-                    .minimumInteractiveComponentSize()
-                    .semantics {
-                        invisibleToUser()
-                    }, checked = isDarkMode, onCheckedChange = { onDarkModeToggle() })
+                Switch(
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .semantics {
+                            hideFromAccessibility()
+                        },
+                    checked = isDarkMode,
+                    onCheckedChange = { onDarkModeToggle() }
+                )
             }
         }
     }

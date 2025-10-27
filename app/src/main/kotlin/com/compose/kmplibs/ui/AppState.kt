@@ -1,6 +1,7 @@
 package com.compose.kmplibs.ui
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
@@ -18,9 +19,12 @@ import org.koin.compose.koinInject
 fun rememberAppState(
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    preferencesRepository: AppPreferencesRepository = koinInject()
+    preferencesRepository: AppPreferencesRepository = koinInject(),
+    initialDarkTheme: Boolean? = null
 ): AppState {
-    val isDarkTheme by preferencesRepository.isDarkTheme().collectAsState(initial = false)
+    val initialValue = initialDarkTheme ?: isSystemInDarkTheme()
+    val isDarkTheme by preferencesRepository.isDarkTheme()
+        .collectAsState(initial = initialValue)
     Log.d("rememberAppState", "isDarkTheme = $isDarkTheme")
     
     return remember(drawerState, coroutineScope, isDarkTheme) {
