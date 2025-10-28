@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 data class SettingsState(
-    var isDarkMode: Boolean = false
+    val isDarkMode: Boolean = false
 )
 
 @KoinViewModel
@@ -42,14 +42,9 @@ class SettingsViewModel(
 
     fun toggleDarkMode() {
         viewModelScope.launch {
-            when(_uiState.value) {
-                is UIState.Success -> {
-                    val newDarkModeState = !(_uiState.value as UIState.Success<SettingsState>).data.isDarkMode
-                    preferencesRepository.setDarkTheme(newDarkModeState)
-                    _uiState.value = UIState.Success(SettingsState(newDarkModeState))
-                }
-                else -> Unit
-            }
+            val currentState = (_uiState.value as? UIState.Success)?.data ?: return@launch
+            val newDarkModeState = !currentState.isDarkMode
+            preferencesRepository.setDarkTheme(newDarkModeState)
         }
     }
 } 

@@ -25,11 +25,16 @@ class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUse
 
     init {
         viewModelScope.launch {
-            getTopRatedMoviesUseCase().fold({
+            try {
+                getTopRatedMoviesUseCase().fold({
+                    _uiState.value = UIState.Success(emptyList())
+                    eventChannel.send(Event.OnError(it.toMessage()))
+                }) {
+                    _uiState.value = UIState.Success(it)
+                }
+            } catch (e: Exception) {
                 _uiState.value = UIState.Success(emptyList())
-                eventChannel.send(Event.OnError(it.toMessage()))
-            }) {
-                _uiState.value = UIState.Success(it)
+                eventChannel.send(Event.OnError(e.localizedMessage ?: "Unknown error"))
             }
         }
     }

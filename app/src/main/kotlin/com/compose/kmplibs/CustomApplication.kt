@@ -17,10 +17,10 @@ class CustomApplication : Application() {
             androidLogger()
             androidContext(this@CustomApplication)
             modules(
+                DispatchersModule().module,
                 DataModule().module,
                 UseCasesModule().module,
-                AppModule().module,
-                DispatchersModule().module
+                AppModule().module
             )
         }
     }

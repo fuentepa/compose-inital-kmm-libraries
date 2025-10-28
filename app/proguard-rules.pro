@@ -20,5 +20,25 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Ktorfit
 -keep class de.jensklingenberg.ktorfit.** { *; }
 -keepclassmembers class de.jensklingenberg.ktorfit.** { *; }
+
+# Kotlinx Serialization
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+-keep,includedescriptorclasses class com.compose.kmplibs.data.model.**$$serializer { *; }
+-keepclassmembers class com.compose.kmplibs.data.model.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.compose.kmplibs.data.model.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Koin
+-keep class org.koin.** { *; }
+-keep class * extends org.koin.core.module.Module
+
+# Room
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**

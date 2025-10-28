@@ -136,7 +136,7 @@ fun MovieDetailsContent(
                 modifier = Modifier
                     .weight(0.275f)
             ) {
-                Header(item = movieDetail, isExpanded)
+                Header(item = movieDetail, true)
             }
 
             Box(
@@ -152,7 +152,7 @@ fun MovieDetailsContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Header(item = movieDetail, isExpanded)
+            Header(item = movieDetail, false)
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_high)))
             Body(item = movieDetail)
         }

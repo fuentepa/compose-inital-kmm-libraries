@@ -7,7 +7,6 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
 @Module
-@ComponentScan
 class DispatchersModule {
 
     @Single(createdAtStart = true)

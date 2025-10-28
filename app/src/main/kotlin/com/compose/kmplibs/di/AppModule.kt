@@ -49,7 +49,7 @@ class AppModule {
                         Log.d("HTTP Client", message)
                     }
                 }
-                level = LogLevel.ALL
+                level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
             }
 
             install(ContentNegotiation) {

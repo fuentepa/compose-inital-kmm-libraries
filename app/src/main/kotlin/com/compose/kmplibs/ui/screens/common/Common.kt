@@ -1,8 +1,5 @@
 package com.compose.kmplibs.ui.screens.common
 
-import android.content.Context
-import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityManager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +8,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
@@ -38,23 +33,13 @@ fun LoadingCircularIndicator(
         contentLoadingDescription != null -> "$loadingText: $contentLoadingDescription"
         else -> loadingText
     }
-    val ctx = LocalContext.current
-    DisposableEffect(Unit) {
-        val accessibilityManager =
-            ctx.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
-        if (accessibilityManager?.isEnabled == true) {
-            val event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_ANNOUNCEMENT)
-            event.text.add(accessibilityDescription)
-            accessibilityManager.sendAccessibilityEvent(event)
-        }
-        onDispose { }
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .semantics {
                 liveRegion = LiveRegionMode.Polite
-                contentLoadingDescription?.let { contentDescription = accessibilityDescription }
+                contentDescription = accessibilityDescription
                 isTraversalGroup = true
             },
         verticalArrangement = Arrangement.Center,

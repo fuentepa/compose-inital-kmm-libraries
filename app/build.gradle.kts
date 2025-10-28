@@ -124,10 +124,10 @@ android {
         }
     }
 
-    ksp {
-        arg("KOIN_CONGIG_CHECK", "true")  //para chequear si nos hemos dejado algo sin configurar de koin
-        arg("KOIN_DEFAULT_MODULE", "true")
-    }
+//    ksp {
+//        arg("KOIN_CONFIG_CHECK", "false")  //para que no chequee, ya esta el plugin para avisar
+//        arg("KOIN_DEFAULT_MODULE", "true")
+//    }
 }
 
 kotlin {
@@ -204,11 +204,4 @@ dependencies {
 
     // Dependencias para Material3 Adaptive
     implementation(libs.androidx.material3.adaptive.navigation.suite.android)
-}
-
-tasks.register("verifyKoin") {
-    dependsOn("checkKoinModules")
-    doLast {
-        println("Verificación de Koin completada.")
-    }
 }
