@@ -27,11 +27,11 @@
 # Kotlinx Serialization
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt
--keep,includedescriptorclasses class com.compose.kmplibs.data.model.**$$serializer { *; }
--keepclassmembers class com.compose.kmplibs.data.model.** {
+-keep,includedescriptorclasses class com.compose.kmplibs.data.remote.response.**$$serializer { *; }
+-keepclassmembers class com.compose.kmplibs.data.remote.response.** {
     *** Companion;
 }
--keepclasseswithmembers class com.compose.kmplibs.data.model.** {
+-keepclasseswithmembers class com.compose.kmplibs.data.remote.response.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

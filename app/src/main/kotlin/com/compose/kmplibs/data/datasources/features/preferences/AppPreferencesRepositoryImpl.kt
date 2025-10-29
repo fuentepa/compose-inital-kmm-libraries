@@ -1,18 +1,18 @@
 package com.compose.kmplibs.data.datasources.features.preferences
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
-import com.compose.kmplibs.data.remote.tryCall
-import kotlinx.coroutines.CoroutineDispatcher
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import com.compose.kmplibs.data.utils.suspendCatching
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
 
 @Single(createdAtStart = true)
 class AppPreferencesRepositoryImpl(
-    private val dataStore: DataStore<Preferences>,
-    private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
+    private val dataStore: DataStore<Preferences>
 ) : AppPreferencesRepository {
 
     companion object {
@@ -24,8 +24,8 @@ class AppPreferencesRepositoryImpl(
         preferences[DEVICE_ID_KEY] ?: 0
     }
 
-    override suspend fun setDeviceId(deviceId: Long): Unit = withContext(dispatcher){
-        tryCall {
+    override suspend fun setDeviceId(deviceId: Long) {
+        suspendCatching {
             dataStore.edit { preferences ->
                 preferences[DEVICE_ID_KEY] = deviceId
             }
@@ -36,8 +36,8 @@ class AppPreferencesRepositoryImpl(
         preferences[IN_DARK_MODE] ?: false
     }
 
-    override suspend fun setDarkTheme(isDarkTheme: Boolean): Unit = withContext(dispatcher){
-        tryCall {
+    override suspend fun setDarkTheme(isDarkTheme: Boolean) {
+        suspendCatching {
             dataStore.edit { preferences ->
                 preferences[IN_DARK_MODE] = isDarkTheme
             }

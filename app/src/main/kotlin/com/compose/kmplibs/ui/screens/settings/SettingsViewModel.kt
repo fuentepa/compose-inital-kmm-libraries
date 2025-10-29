@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.compose.kmplibs.data.datasources.features.preferences.AppPreferencesRepository
 import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
+import com.compose.kmplibs.usecases.GetIsDarkThemeUseCase
+import com.compose.kmplibs.usecases.SetIsDarkThemeUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +21,8 @@ data class SettingsState(
 
 @KoinViewModel
 class SettingsViewModel(
-    private val preferencesRepository: AppPreferencesRepository
+    private val setIsDarkThemeUseCase: SetIsDarkThemeUseCase,
+    private val getIsDarkThemeUseCase: GetIsDarkThemeUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UIState<SettingsState>>(UIState.Loading())
@@ -34,7 +37,7 @@ class SettingsViewModel(
 
     private fun loadPreferences() {
         viewModelScope.launch {
-            preferencesRepository.isDarkTheme().collect { isDarkMode ->
+            getIsDarkThemeUseCase().collect { isDarkMode ->
                 _uiState.value = UIState.Success(SettingsState(isDarkMode))
             }
         }
@@ -44,7 +47,7 @@ class SettingsViewModel(
         viewModelScope.launch {
             val currentState = (_uiState.value as? UIState.Success)?.data ?: return@launch
             val newDarkModeState = !currentState.isDarkMode
-            preferencesRepository.setDarkTheme(newDarkModeState)
+            setIsDarkThemeUseCase(newDarkModeState)
         }
     }
 } 

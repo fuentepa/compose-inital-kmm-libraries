@@ -30,14 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
-import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.data.model.Movie
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarVisuals
+import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.ObserveAsEvents
-import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import org.koin.androidx.compose.koinViewModel
 

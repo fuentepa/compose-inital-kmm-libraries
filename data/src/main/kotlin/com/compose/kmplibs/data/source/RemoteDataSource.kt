@@ -1,12 +1,11 @@
 package com.compose.kmplibs.data.source
 
-import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.data.remote.Result
+import com.compose.kmplibs.data.remote.response.MovieDetailResponse
+import com.compose.kmplibs.data.remote.response.MovieResponse
 
 interface RemoteDataSource {
 
-    suspend fun getTopRatedMovies(): Result<List<Movie>>
+    suspend fun getTopRatedMovies(): Result<List<MovieResponse>>
 
-    suspend fun getMovieDetails(id: Int): Result<MovieDetail>
+    suspend fun getMovieDetails(id: Int): Result<MovieDetailResponse>
 }

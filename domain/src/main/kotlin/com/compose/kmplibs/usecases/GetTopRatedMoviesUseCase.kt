@@ -1,8 +1,9 @@
 package com.compose.kmplibs.usecases
 
-import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.data.model.Movie
 import com.compose.kmplibs.data.repository.MoviesRepository
-import com.compose.kmplibs.data.remote.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Factory
 
 fun interface GetTopRatedMoviesUseCase {
@@ -10,6 +11,11 @@ fun interface GetTopRatedMoviesUseCase {
 }
 
 @Factory
-class GetTopRatedMoviesUseCaseImpl(private val repository: MoviesRepository) : GetTopRatedMoviesUseCase {
-    override suspend operator fun invoke(): Result<List<Movie>> = repository.getTopRatedMovies()
+class GetTopRatedMoviesUseCaseImpl(
+    private val repository: MoviesRepository,
+    private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
+) : GetTopRatedMoviesUseCase {
+    override suspend operator fun invoke(): Result<List<Movie>> = withContext(dispatcher) {
+        repository.getTopRatedMovies()
+    }
 }

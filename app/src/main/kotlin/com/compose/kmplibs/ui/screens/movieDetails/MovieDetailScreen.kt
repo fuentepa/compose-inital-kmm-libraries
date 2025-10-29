@@ -37,7 +37,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
-import com.compose.kmplibs.data.entity.MovieDetail
+import com.compose.kmplibs.data.model.MovieDetail
 import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost

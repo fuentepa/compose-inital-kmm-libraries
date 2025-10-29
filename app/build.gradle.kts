@@ -155,8 +155,6 @@ dependencies {
     // Añadir las dependencias de Navigation Compose
     implementation(libs.androidx.navigation.compose)
 
-    implementation(libs.io.arrow)
-
     //koin
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)

@@ -2,7 +2,7 @@ package com.compose.kmplibs.ui.screens.movieDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.compose.kmplibs.data.entity.MovieDetail
+import com.compose.kmplibs.data.model.MovieDetail
 import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.usecases.GetMovieDetailUseCase
@@ -29,8 +29,8 @@ class MovieDetailViewModel(
         viewModelScope.launch {
             try {
                 getMovieDetailUseCase(movieId).fold(
-                    { error -> eventChannel.send(Event.OnError(error.toMessage())) },
-                    { data -> _uiState.value = UIState.Success(data) }
+                    { data -> _uiState.value = UIState.Success(data) },
+                    { error -> eventChannel.send(Event.OnError(error.localizedMessage ?: "Unknown error")) }
                 )
             } catch (e: Exception) {
                 eventChannel.send(Event.OnError(e.localizedMessage ?: "Unknown error"))

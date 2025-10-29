@@ -10,11 +10,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM movies")
-    fun getAllMoviesFlow(): Flow<List<MovieEntity>>
-    
-    @Query("SELECT * FROM movies")
-    suspend fun getAllMovies(): List<MovieEntity>
-    
+    fun getTopRatedMovies(): Flow<List<MovieEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovies(movies: List<MovieEntity>)
     
@@ -23,4 +20,7 @@ interface MovieDao {
     
     @Query("SELECT * FROM movies WHERE id = :movieId")
     suspend fun getMovieById(movieId: Int): MovieEntity?
+
+    @Query("SELECT COUNT(*) FROM movies")
+    suspend fun getMoviesCount(): Int
 } 

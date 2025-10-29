@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.data.remote.TMDBApiService
-import com.compose.kmplibs.data.remote.ResponseConverterFactory
 import com.compose.kmplibs.data.remote.createTMDBApiService
+import com.compose.kmplibs.data.remote.ktor.ResponseConverterFactory
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout

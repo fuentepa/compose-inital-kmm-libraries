@@ -1,7 +1,7 @@
 package com.compose.kmplibs.data.remote
 
-import com.compose.kmplibs.data.model.MovieDetailResponse
-import com.compose.kmplibs.data.model.MovieListResponse
+import com.compose.kmplibs.data.remote.response.MovieDetailResponse
+import com.compose.kmplibs.data.remote.response.MovieListResponse
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Path
 

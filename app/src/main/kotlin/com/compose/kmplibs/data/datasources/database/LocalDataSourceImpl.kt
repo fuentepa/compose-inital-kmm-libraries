@@ -1,51 +1,45 @@
 package com.compose.kmplibs.data.datasources.database
 
-import android.util.Log
 import com.compose.kmplibs.data.datasources.database.entity.toEntity
 import com.compose.kmplibs.data.datasources.database.entity.toModel
-import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.data.remote.Result
-import com.compose.kmplibs.data.remote.tryCall
+import com.compose.kmplibs.data.datasources.database.error.LocalException
+import com.compose.kmplibs.data.model.Movie
+import com.compose.kmplibs.data.model.MovieDetail
 import com.compose.kmplibs.data.source.LocalDataSource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
 
 @Single(createdAtStart = true)
 class LocalDataSourceImpl(
-    private val database: AppDatabase,
-    private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
+    private val database: AppDatabase
 ) : LocalDataSource {
 
-    override suspend fun isEmpty(): Boolean = withContext(dispatcher) {
-        Log.d("LocalDataSourceImpl", "->  trycall -> isEmpty")
-        database.movieDao().getAllMovies().isEmpty()
-    }
+    override suspend fun isEmpty(): Boolean = database.movieDao().getMoviesCount() == 0
 
-    override suspend fun getTopRatedMovies(): Result<List<Movie>> = withContext(dispatcher) {
-        tryCall {
-            Log.d("LocalDataSourceImpl", "->  trycall -> getTopRatedMovies")
-            val movies = database.movieDao().getAllMovies()
-            movies.map { it.toModel() }
+    override suspend fun getTopRatedMovies(): Result<List<Movie>> {
+        return try {
+            val movies = database.movieDao().getTopRatedMovies()
+                .map { movieEntities -> movieEntities.map { it.toModel() } }
+                .firstOrNull()
+            Result.success(movies ?: emptyList())
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
-    override suspend fun getMovieDetails(id: Int): Result<MovieDetail> = withContext(dispatcher) {
-        tryCall {
-            Log.d("LocalDataSourceImpl", "->  trycall -> getMovieDetails")
-            val movieDetail = database.movieDetailDao().getMovieDetail(id)
-            movieDetail?.toModel() ?: throw Exception("MovieDetail not found")
-        }
+    override suspend fun getMovieDetails(id: Int): Result<MovieDetail> {
+        val movieDetail = database.movieDetailDao().getMovieDetail(id)
+        return movieDetail?.let {
+             Result.success( it.toModel())
+        } ?: Result.failure(LocalException.LocalStorage("Movie detail with id=$id not found" ))
     }
 
     override suspend fun saveTopRatedMovies(movies: List<Movie>) {
-        Log.d("LocalDataSourceImpl", "->  trycall -> saveTopRatedMovies")
         database.movieDao().insertMovies(movies.map { it.toEntity() })
     }
 
     override suspend fun saveMovieDetail(movieDetail: MovieDetail) {
-        Log.d("LocalDataSourceImpl", "->  trycall -> saveMovieDetail")
         database.movieDetailDao().insertMovieDetail(movieDetail.toEntity())
     }
 }

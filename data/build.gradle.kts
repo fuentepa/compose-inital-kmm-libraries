@@ -9,7 +9,6 @@ dependencies {
     implementation(libs.ktorfit.lib)
     implementation(libs.ktorfit.converters.response)
     implementation(libs.ktor.client.serialization)
-    implementation(libs.io.arrow)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(platform(libs.koin.annotations.bom))

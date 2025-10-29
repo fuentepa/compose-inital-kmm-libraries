@@ -1,5 +1,7 @@
-package com.compose.kmplibs.data.model
+package com.compose.kmplibs.data.remote.response
 
+import com.compose.kmplibs.data.model.Movie
+import com.compose.kmplibs.data.model.MovieDetail
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -25,3 +27,21 @@ data class GenreResponse(
     @SerialName("id") val id: Int,
     @SerialName("name") val name: String,
 )
+
+fun MovieDetailResponse.toModel() =
+    MovieDetail(
+        id = id,
+        title = title,
+        overview = overview,
+        posterUrl = posterUrl,
+        posterUrlDescription = title,
+        backdropUrl = backdropUrl,
+        adult = adult,
+        releaseDate = releaseDate,
+        popularity = popularity,
+        voteAverage = voteAverage,
+        voteCount = voteCount,
+        tagline = tagline,
+        runtime = runtime,
+        genres = genres.map { it.name }
+    )

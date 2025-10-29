@@ -5,22 +5,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.compose.kmplibs.data.datasources.features.preferences.AppPreferencesRepository
 import com.compose.kmplibs.ui.App
+import com.compose.kmplibs.usecases.GetIsDarkThemeUseCase
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    private val preferencesRepository: AppPreferencesRepository by inject()
+    private val isDarkThemeUseCase: GetIsDarkThemeUseCase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             setContent {
-                val isDarkTheme by preferencesRepository.isDarkTheme()
-                    .collectAsStateWithLifecycle(initialValue = false)
+                setContent {
+                    val isDarkTheme by isDarkThemeUseCase().collectAsStateWithLifecycle(initialValue = null)
 
-                App(initialDarkTheme = isDarkTheme)
+                    isDarkTheme?.let { darkTheme ->
+                        App(initialDarkTheme = darkTheme)
+                    }
+                }
             }
     }
-
 }

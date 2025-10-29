@@ -1,8 +1,8 @@
 package com.compose.kmplibs.data.source
 
-import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.data.remote.Result
+
+import com.compose.kmplibs.data.model.Movie
+import com.compose.kmplibs.data.model.MovieDetail
 
 interface LocalDataSource {
 

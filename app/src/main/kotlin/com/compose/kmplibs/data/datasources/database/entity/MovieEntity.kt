@@ -2,7 +2,8 @@ package com.compose.kmplibs.data.datasources.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.data.model.Movie
+import com.compose.kmplibs.data.remote.response.MovieResponse
 
 @Entity(tableName = "movies")
 data class MovieEntity(
@@ -32,4 +33,13 @@ fun Movie.toEntity(): MovieEntity {
         posterUrl = posterUrl,
         posterUrlDescription = posterUrlDescription
     )
-} 
+}
+
+fun MovieResponse.toEntity() =
+    MovieEntity(
+        id = id,
+        title = title,
+        overview = overview,
+        posterUrl = posterUrl,
+        posterUrlDescription = title
+    )

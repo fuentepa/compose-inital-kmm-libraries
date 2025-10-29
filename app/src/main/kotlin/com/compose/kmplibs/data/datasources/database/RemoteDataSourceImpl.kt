@@ -1,34 +1,22 @@
 package com.compose.kmplibs.data.datasources.database
 
-import android.util.Log
-import com.compose.kmplibs.data.entity.Movie
-import com.compose.kmplibs.data.entity.MovieDetail
-import com.compose.kmplibs.data.entity.map
-import com.compose.kmplibs.data.remote.Result
 import com.compose.kmplibs.data.remote.TMDBApiService
-import com.compose.kmplibs.data.remote.tryCall
+import com.compose.kmplibs.data.remote.response.MovieDetailResponse
+import com.compose.kmplibs.data.remote.response.MovieResponse
 import com.compose.kmplibs.data.source.RemoteDataSource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import com.compose.kmplibs.data.utils.catching
 import org.koin.core.annotation.Single
 
 @Single(createdAtStart = true)
 class RemoteDataSourceImpl(
-    private val apiService: TMDBApiService,
-    private val dispatcher: CoroutineDispatcher // el dispatcher que hemos indicado con koin, el directamente lo inyecta
+    private val apiService: TMDBApiService
 ) : RemoteDataSource {
 
-    override suspend fun getTopRatedMovies(): Result<List<Movie>> = withContext(dispatcher) {
-        tryCall {
-            Log.d("MoviesRepositoryImpl", "->  trycall -> getTopRatedMovies")
-            apiService.getTopRatedMovies().results.map { it.map() }
-        }
+    override suspend fun getTopRatedMovies(): Result<List<MovieResponse>> = catching {
+        apiService.getTopRatedMovies().results
     }
 
-    override suspend fun getMovieDetails(id: Int): Result<MovieDetail> = withContext(dispatcher) {
-        tryCall {
-            Log.d("MoviesRepositoryImpl", "->  trycall -> getMovieDetail")
-            apiService.getMovieDetail(id).map()
-        }
+    override suspend fun getMovieDetails(id: Int): Result<MovieDetailResponse> = catching {
+        apiService.getMovieDetail(id)
     }
 }

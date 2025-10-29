@@ -2,7 +2,7 @@ package com.compose.kmplibs.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.compose.kmplibs.data.entity.Movie
+import com.compose.kmplibs.data.model.Movie
 import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.usecases.GetTopRatedMoviesUseCase
@@ -26,12 +26,15 @@ class MoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedMoviesUse
     init {
         viewModelScope.launch {
             try {
-                getTopRatedMoviesUseCase().fold({
-                    _uiState.value = UIState.Success(emptyList())
-                    eventChannel.send(Event.OnError(it.toMessage()))
-                }) {
-                    _uiState.value = UIState.Success(it)
-                }
+                getTopRatedMoviesUseCase().fold(
+                    onFailure = {
+                        _uiState.value = UIState.Success(emptyList())
+                        eventChannel.send(Event.OnError(it.localizedMessage ?: "Unknown error"))
+                    },
+                    onSuccess = {
+                        _uiState.value = UIState.Success(it)
+                    }
+                )
             } catch (e: Exception) {
                 _uiState.value = UIState.Success(emptyList())
                 eventChannel.send(Event.OnError(e.localizedMessage ?: "Unknown error"))

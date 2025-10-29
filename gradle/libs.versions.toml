@@ -1,6 +1,7 @@
 [versions]
 agp = "8.13.0"
 kotlin = "2.2.20"
+coroutines = "1.10.2"
 androidx-activityCompose = "1.11.0"
 androidx-appcompat = "1.7.1"
 androidx-core-ktx = "1.17.0"
@@ -45,6 +46,7 @@ androidx-material-icons-extended = { group = "androidx.compose.material", name =
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx" , name = "kotlinx-serialization-json" , version = "1.9.0" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }  # Agregar esta línea
 
 koin-annotations-bom = { group = "io.insert-koin", name = "koin-annotations-bom", version.ref = "koin-annotations-bom" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annotations-bom"}
@@ -57,8 +59,6 @@ koin-androidx-workmanager = { group = "io.insert-koin", name = "koin-androidx-wo
 koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation"}
 koin-test = { group = "io.insert-koin", name = "koin-test"}
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4"}
-
-io-arrow = { group = "io.arrow-kt", name = "arrow-core", version = "2.1.2" }
 
 ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfit-ksp" }
 ktorfit-lib = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
