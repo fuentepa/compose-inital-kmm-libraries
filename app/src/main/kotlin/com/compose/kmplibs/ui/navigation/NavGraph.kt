@@ -29,7 +29,7 @@ fun AppNavHost(
         composable<NavDestinations.Detail> { backStackEntry ->
             val detail = backStackEntry.toRoute<NavDestinations.Detail>()
             MovieDetailScreen(
-                movieId = detail.moviId,
+                movieId = detail.movieId,
                 onBack = { navController.popBackStack() }
             )
         }

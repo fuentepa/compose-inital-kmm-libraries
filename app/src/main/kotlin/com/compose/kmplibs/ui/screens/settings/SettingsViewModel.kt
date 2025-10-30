@@ -2,7 +2,6 @@ package com.compose.kmplibs.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.compose.kmplibs.data.datasources.features.preferences.AppPreferencesRepository
 import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.usecases.GetIsDarkThemeUseCase

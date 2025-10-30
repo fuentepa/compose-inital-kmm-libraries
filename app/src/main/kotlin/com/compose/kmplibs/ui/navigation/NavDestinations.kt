@@ -7,7 +7,7 @@ sealed interface NavDestinations {
     data object Home: NavDestinations
 
     @Serializable
-    data class Detail(val moviId: Int): NavDestinations
+    data class Detail(val movieId: Int): NavDestinations
 
     @Serializable
     data object Settings: NavDestinations
