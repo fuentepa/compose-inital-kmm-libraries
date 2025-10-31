@@ -1,93 +1,238 @@
-# Compose inital Kmm libraries
+# Compose Initial KMM Libraries
 
+## 📋 Descripción del Proyecto
 
+Este es un proyecto Android nativo desarrollado con **Jetpack Compose** que implementa una arquitectura limpia (Clean Architecture) modular. El proyecto está diseñado como una plantilla inicial para aplicaciones Android que consumen APIs REST, utilizando las mejores prácticas y las últimas tecnologías del ecosistema Android/Kotlin.
 
-## Getting started
+### Arquitectura del Proyecto
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+El proyecto está estructurado en **3 módulos principales**:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- **`app`**: Módulo de presentación que contiene la interfaz de usuario con Jetpack Compose, navegación y lógica de UI.
+- **`domain`**: Módulo que contiene los casos de uso, entidades de negocio y contratos de repositorio.
+- **`data`**: Módulo que implementa los repositorios, fuentes de datos (API REST, base de datos local) y modelos de datos.
 
-## Add your files
+### Tecnologías Principales
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- **Jetpack Compose** - UI moderna y declarativa
+- **Kotlin 2.2.21** - Lenguaje de programación
+- **Koin** - Inyección de dependencias con anotaciones
+- **Ktorfit + Ktor 3** - Cliente HTTP type-safe para API REST
+- **Room** - Base de datos local
+- **Coil 3** - Carga de imágenes con soporte Compose
+- **DataStore** - Almacenamiento de preferencias
+- **Navigation Compose** - Navegación entre pantallas
+- **Material 3** - Sistema de diseño con componentes adaptativos
+- **Kotlinx Serialization** - Serialización/deserialización JSON
+
+### Características
+
+- ✅ Arquitectura limpia modular
+- ✅ Inyección de dependencias con Koin y KSP
+- ✅ Networking type-safe con Ktorfit
+- ✅ Persistencia local con Room
+- ✅ UI moderna con Jetpack Compose y Material 3
+- ✅ Flavors de desarrollo (dev/pro)
+- ✅ Configuración de firma de APKs
+- ✅ Integración con TMDB API (The Movie Database)
+
+---
+
+## 🚀 Cómo Clonar y Configurar el Proyecto
+
+### Requisitos Previos
+
+- **Android Studio** Ladybug (2024.2.1) o superior
+- **JDK 21** o superior
+- **Git** instalado en tu sistema
+- SDK de Android con API Level 28-36
+
+### Opción 1: Clonar el Repositorio Directamente
+
+Para trabajar directamente con este repositorio en tu máquina local:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/TU_USUARIO/compose-inital-kmm-libraries.git
+
+# 2. Navegar al directorio del proyecto
+cd compose-inital-kmm-libraries
+
+# 3. Abrir el proyecto con Android Studio
+# Archivo > Abrir > Seleccionar la carpeta del proyecto
+```
+
+### Opción 2: Crear un Fork (Copia con Otro Nombre)
+
+Si deseas crear tu propia copia del proyecto con un nombre diferente:
+
+#### Desde GitHub (Interfaz Web)
+
+1. **Hacer Fork del repositorio:**
+   - Ve al repositorio original en GitHub: `https://github.com/USUARIO_ORIGINAL/compose-inital-kmm-libraries`
+   - Haz clic en el botón **"Fork"** (esquina superior derecha)
+   - Selecciona tu cuenta de GitHub como destino
+   - Opcionalmente, cambia el nombre del repositorio en la pantalla de fork
+
+2. **Clonar tu fork:**
+```bash
+# Clona tu fork (no el original)
+git clone https://github.com/TU_USUARIO/tu-nuevo-nombre-proyecto.git
+
+# Navega al directorio
+cd tu-nuevo-nombre-proyecto
+```
+
+3. **Renombrar el proyecto localmente:**
+   
+   Una vez clonado, debes cambiar el nombre del proyecto en estos archivos:
+
+   - **`settings.gradle.kts`** - Línea 23:
+     ```kotlin
+     rootProject.name = "tu-nuevo-nombre-proyecto"
+     ```
+
+   - **`app/build.gradle.kts`** - Líneas 21 y 26:
+     ```kotlin
+     namespace = "com.tunuevopackage.nombre"
+     applicationId = "com.tunuevopackage.nombre"
+     ```
+
+   - Renombra los paquetes de Kotlin en:
+     - `app/src/main/kotlin/com/compose/kmplibs/` → `app/src/main/kotlin/com/tunuevopackage/nombre/`
+     - `data/src/main/kotlin/` → actualizar estructura de paquetes
+     - `domain/src/main/kotlin/` → actualizar estructura de paquetes
+
+#### Desde Línea de Comandos (Git)
+
+```bash
+# 1. Clonar el repositorio original sin historial completo
+git clone --depth 1 https://github.com/USUARIO_ORIGINAL/compose-inital-kmm-libraries.git tu-nuevo-nombre-proyecto
+
+# 2. Navegar al nuevo directorio
+cd tu-nuevo-nombre-proyecto
+
+# 3. Eliminar el origen remoto original
+git remote remove origin
+
+# 4. Crear un nuevo repositorio en GitHub (desde la web) y luego conectarlo
+git remote add origin https://github.com/TU_USUARIO/tu-nuevo-nombre-proyecto.git
+
+# 5. Hacer push de tu código al nuevo repositorio
+git push -u origin main
+```
+
+---
+
+## 🛠️ Configuración Inicial
+
+### 1. Crear archivo `local.properties`
+
+Crea un archivo `local.properties` en la raíz del proyecto con la siguiente estructura:
+
+```properties
+# Ruta del SDK de Android (se genera automáticamente al abrir el proyecto)
+sdk.dir=C\:\\Users\\TU_USUARIO\\AppData\\Local\\Android\\Sdk
+
+# Clave privada de API (opcional, descomentarla si la necesitas)
+# privateApiKey=TU_CLAVE_PRIVADA_AQUI
+```
+
+### 2. Configurar Keystore para Desarrollo
+
+El proyecto ya incluye un keystore de desarrollo en `keys/devKeyStore.jks`. Si necesitas crear uno propio:
+
+```bash
+keytool -genkey -v -keystore keys/devKeyStore.jks -alias devKeyAlias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Actualiza las credenciales en `keys/keystoreDev.properties`.
+
+### 3. Sincronizar el Proyecto
+
+1. Abre Android Studio
+2. Abre el proyecto
+3. Espera a que Gradle sincronice todas las dependencias
+4. Construye el proyecto: **Build > Make Project**
+
+### 4. Ejecutar la Aplicación
+
+```bash
+# Desde la terminal
+./gradlew :app:assembleDevDebug
+
+# O desde Android Studio
+# Selecciona la variante "devDebug" y presiona Run ▶️
+```
+
+---
+
+## 📂 Estructura del Proyecto
 
 ```
-cd existing_repo
-git remote add origin https://git.paradigmadigital.com/mobile/android/archetypes/compose-inital-kmm-libraries.git
-git branch -M main
-git push -uf origin main
+compose-initial-kmm-libraries/
+├── app/                          # Módulo de presentación (UI)
+│   ├── src/main/kotlin/          # Código fuente Compose
+│   └── build.gradle.kts          # Configuración del módulo
+├── data/                         # Módulo de datos
+│   ├── src/main/kotlin/          # Repositorios, API, DB
+│   └── build.gradle.kts
+├── domain/                       # Módulo de dominio
+│   ├── src/main/kotlin/          # Casos de uso, entidades
+│   └── build.gradle.kts
+├── gradle/
+│   └── libs.versions.toml        # Catálogo de versiones centralizado
+├── keys/                         # Keystores de firma
+├── build.gradle.kts              # Configuración raíz
+├── settings.gradle.kts           # Configuración de módulos
+└── README.md                     # Este archivo
 ```
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](https://git.paradigmadigital.com/mobile/android/archetypes/compose-inital-kmm-libraries/-/settings/integrations)
+## 🏗️ Variantes de Compilación
 
-## Collaborate with your team
+El proyecto tiene dos **flavors** configurados:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- **dev**: Entorno de desarrollo con TMDB API
+- **pro**: Entorno de producción
 
-## Test and Deploy
+Y dos **build types**:
 
-Use the built-in continuous integration in GitLab.
+- **debug**: Versión de depuración
+- **release**: Versión de producción (requiere configurar keystore)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Combinaciones disponibles:
+- `devDebug`
+- `devRelease`
+- `proDebug`
+- `proRelease`
 
-***
+---
 
-# Editing this README
+## 📝 Licencia
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Este proyecto es una plantilla de código abierto. Puedes usarlo libremente para tus proyectos.
 
-## Suggestions for a good README
+---
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 🤝 Contribuciones
 
-## Name
-Choose a self-explaining name for your project.
+Las contribuciones son bienvenidas. Por favor:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+1. Haz fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Añade nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+---
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 📧 Contacto
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Para preguntas o sugerencias, abre un issue en el repositorio.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+---
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+**¡Feliz codificación! 🎉**
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
