@@ -7,21 +7,23 @@ import com.compose.kmplibs.di.AppModule
 import com.compose.kmplibs.usecases.di.UseCasesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.GlobalContext.startKoin
-import org.koin.ksp.generated.module
+import org.koin.core.annotation.KoinApplication
+import org.koin.ksp.generated.*
 
+@KoinApplication(
+    modules = [
+        DispatchersModule::class,
+        DataModule::class,
+        UseCasesModule::class,
+        AppModule::class
+    ]
+)
 class CustomApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidLogger()
             androidContext(this@CustomApplication)
-            modules(
-                DispatchersModule().module,
-                DataModule().module,
-                UseCasesModule().module,
-                AppModule().module
-            )
         }
     }
 }
