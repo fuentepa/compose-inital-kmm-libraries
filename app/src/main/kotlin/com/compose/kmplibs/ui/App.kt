@@ -35,6 +35,7 @@ import org.koin.compose.KoinContext
 
 @Composable
 fun App(
+    modifier: Modifier = Modifier,
     initialDarkTheme: Boolean? = null,
     appState: AppState = rememberAppState(initialDarkTheme = initialDarkTheme)
 )   {
@@ -55,7 +56,10 @@ fun App(
 }
 
 @Composable
-fun AdaptiveApp(appState: AppState) {
+fun AdaptiveApp(
+    appState: AppState,
+    modifier: Modifier = Modifier
+) {
     val navController = rememberNavController()
     var selectedDestination by rememberSaveable { mutableStateOf(AppDestinations.Movies) }
     
@@ -83,7 +87,9 @@ fun AdaptiveApp(appState: AppState) {
         }
     ) {
         Surface(color = MaterialTheme.colorScheme.background) {
-            AppNavHost(navController, selectedDestination.navDestination)
+            AppNavHost(
+                navController,
+                navDestination = selectedDestination.navDestination)
         }
     }
 }

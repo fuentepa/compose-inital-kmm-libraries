@@ -3,9 +3,11 @@ package com.compose.kmplibs.ui.util
 import android.util.Log
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
-import androidx.window.core.layout.WindowHeightSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
+import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
+import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
 
 //aqui se pueden cambiar los valores a lo que nos pidan en el proyecto
 fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSuiteType {
@@ -15,21 +17,20 @@ fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSu
     )
 
     return with(windowInfo) {
-        if (
-            windowPosture.isTabletop ||
-            windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT
-        ) {
+        if (windowPosture.isTabletop || isCompactScreen)
             NavigationSuiteType.NavigationRail
-        } else if (
-            windowSizeClass.windowWidthSizeClass == EXPANDED ||
-            windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.MEDIUM
-        ) {
+        else if (isExpandedScreen || isMediumScreen)
             NavigationSuiteType.NavigationRail
-        } else {
+        else
             NavigationSuiteType.NavigationBar
-        }
     }
 }
 
-fun isExpandedScreen(windowInfo: WindowAdaptiveInfo): Boolean =
-    windowInfo.windowSizeClass.windowWidthSizeClass == EXPANDED
+val WindowAdaptiveInfo.isExpandedScreen: Boolean
+    get() = windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND)
+
+val WindowAdaptiveInfo.isMediumScreen: Boolean
+    get() = windowSizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)
+
+val WindowAdaptiveInfo.isCompactScreen: Boolean
+    get() = !windowSizeClass.isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)

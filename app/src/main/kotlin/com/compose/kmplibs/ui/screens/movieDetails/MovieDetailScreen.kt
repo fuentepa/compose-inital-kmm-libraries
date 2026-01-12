@@ -35,6 +35,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.compose.kmplibs.BuildConfig
 import com.compose.kmplibs.R
 import com.compose.kmplibs.data.model.MovieDetail
@@ -54,12 +55,13 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun MovieDetailScreen(
     movieId: Int,
+    modifier: Modifier = Modifier,
     viewModel: MovieDetailViewModel = koinViewModel { parametersOf(movieId) },
-    onBack: () -> Unit
+    onBack: () -> Unit = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var title by rememberSaveable { mutableStateOf("") }
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState) {
         if (uiState is UIState.Success) {
@@ -122,9 +124,7 @@ fun MovieDetailsContent(
     movieDetail: MovieDetail,
     modifier: Modifier = Modifier
 ) {
-    val isExpanded = isExpandedScreen(currentWindowAdaptiveInfo())
-
-    if (isExpanded) {
+    if (currentWindowAdaptiveInfo().isExpandedScreen) {
         Row(
             modifier = modifier
                 .fillMaxSize()

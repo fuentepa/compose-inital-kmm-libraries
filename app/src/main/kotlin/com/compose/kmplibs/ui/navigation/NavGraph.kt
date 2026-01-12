@@ -8,10 +8,12 @@ import androidx.navigation.toRoute
 import com.compose.kmplibs.ui.screens.movieDetails.MovieDetailScreen
 import com.compose.kmplibs.ui.screens.movies.MoviesScreen
 import com.compose.kmplibs.ui.screens.settings.SettingsScreen
+import androidx.compose.ui.Modifier
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
+    modifier: Modifier = Modifier,
     navDestination: NavDestinations = NavDestinations.Home
 ) {
     NavHost(

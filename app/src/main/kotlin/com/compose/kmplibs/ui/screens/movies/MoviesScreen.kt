@@ -43,8 +43,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MoviesScreen(
-    viewModel: MoviesViewModel = koinViewModel(),
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: MoviesViewModel = koinViewModel()
 ) {
     //val appState: AppState = rememberAppState() //por si se usa un Navigation Drawer
     val snackbarHostState = remember { SnackbarHostState() }
