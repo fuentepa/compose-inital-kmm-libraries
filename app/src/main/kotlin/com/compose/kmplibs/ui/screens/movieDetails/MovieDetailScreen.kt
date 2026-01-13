@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,10 +42,10 @@ import com.compose.kmplibs.ui.navigation.AppBarIcon
 import com.compose.kmplibs.ui.navigation.TheTopAppBar
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarHost
 import com.compose.kmplibs.ui.screens.common.CustomSnackbarVisuals
+import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.LoadImage
 import com.compose.kmplibs.ui.screens.common.LoadingCircularIndicator
 import com.compose.kmplibs.ui.screens.common.ObserveAsEvents
-import com.compose.kmplibs.ui.screens.common.Event
 import com.compose.kmplibs.ui.screens.common.UIState
 import com.compose.kmplibs.ui.util.isExpandedScreen
 import org.koin.androidx.compose.koinViewModel
@@ -80,7 +79,7 @@ fun MovieDetailScreen(
                 title = { Text(text = title) },
                 navigationIcon = {
                     AppBarIcon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         onClick = onBack,
                         contentDescription = stringResource(R.string.back_button_description)
                     )

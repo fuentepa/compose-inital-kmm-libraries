@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -20,7 +19,7 @@ room {
 android {
     namespace = "com.compose.kmplibs"
     compileSdk = 36
-    buildToolsVersion = "36.0.0"
+    buildToolsVersion = "36.1.0"
 
     defaultConfig {
         applicationId = "com.compose.kmplibs"
@@ -133,6 +132,7 @@ android {
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_21
+        //freeCompilerArgs.add("-Xlambdas=class") //para cuando el live edit no va
     }
 }
 
@@ -152,6 +152,8 @@ dependencies {
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.kotlinx.serialization.json)
+    // Dependencias para Material3 Adaptive
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
 
     // Añadir las dependencias de Navigation Compose
     implementation(libs.androidx.navigation.compose)
@@ -200,7 +202,4 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Dependencias para Material3 Adaptive
-    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
 }
