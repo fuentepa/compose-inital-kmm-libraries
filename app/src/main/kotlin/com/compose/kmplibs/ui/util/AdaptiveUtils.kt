@@ -3,8 +3,6 @@ package com.compose.kmplibs.ui.util
 import android.util.Log
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
@@ -17,12 +15,11 @@ fun getNavigationTypeForWindowInfo(windowInfo: WindowAdaptiveInfo): NavigationSu
     )
 
     return with(windowInfo) {
-        if (windowPosture.isTabletop || isCompactScreen)
-            NavigationSuiteType.NavigationRail
-        else if (isExpandedScreen || isMediumScreen)
-            NavigationSuiteType.NavigationRail
-        else
-            NavigationSuiteType.NavigationBar
+        when {
+            windowPosture.isTabletop || isCompactScreen -> NavigationSuiteType.NavigationRail
+            isExpandedScreen || isMediumScreen -> NavigationSuiteType.NavigationRail
+            else -> NavigationSuiteType.NavigationBar
+        }
     }
 }
 

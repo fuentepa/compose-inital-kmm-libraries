@@ -31,7 +31,6 @@ import com.compose.kmplibs.ui.navigation.AppNavHost
 import com.compose.kmplibs.ui.navigation.NavDestinations
 import com.compose.kmplibs.ui.theme.AppTheme
 import com.compose.kmplibs.ui.util.getNavigationTypeForWindowInfo
-import org.koin.compose.KoinContext
 
 @Composable
 fun App(
@@ -70,7 +69,8 @@ fun AdaptiveApp(
         layoutType = getNavigationTypeForWindowInfo(windowInfo),
         navigationSuiteColors = NavigationSuiteDefaults.colors(
             navigationBarContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-            navigationRailContainerColor = MaterialTheme.colorScheme.surfaceContainer
+            navigationRailContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            navigationDrawerContainerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         navigationSuiteItems = {
             AppDestinations.entries.forEach { destination ->
@@ -89,7 +89,8 @@ fun AdaptiveApp(
         Surface(color = MaterialTheme.colorScheme.background) {
             AppNavHost(
                 navController,
-                navDestination = selectedDestination.navDestination)
+                navDestination = selectedDestination.navDestination
+            )
         }
     }
 }
