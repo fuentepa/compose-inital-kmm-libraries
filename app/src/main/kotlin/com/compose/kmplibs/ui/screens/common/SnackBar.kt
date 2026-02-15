@@ -31,8 +31,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.compose.kmplibs.R
 
+@Suppress("EffectKeys")
 @Composable
-fun SnackbarHostState.ShowSnackbar(message: String, isError: Boolean = false) {
+fun SnackbarHostState.ShowSnackbar(
+    message: String,
+    modifier: Modifier = Modifier,
+    isError: Boolean = false
+) {
     if (message.isNotEmpty()) {
         LaunchedEffect(Unit) {
             with(this@ShowSnackbar) {

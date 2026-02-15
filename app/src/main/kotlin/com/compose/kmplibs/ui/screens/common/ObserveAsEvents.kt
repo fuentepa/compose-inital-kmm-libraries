@@ -3,13 +3,13 @@ package com.compose.kmplibs.ui.screens.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.Lifecycle
-
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
+@Suppress("ParamsComparedByRef")
 @Composable
 fun <T> ObserveAsEvents(
     flow: Flow<T>,
@@ -17,7 +17,7 @@ fun <T> ObserveAsEvents(
     onEvent: suspend (T) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(lifecycleOwner, key1){
+    LaunchedEffect(lifecycleOwner, key1, onEvent){
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             withContext(Dispatchers.Main.immediate) {
                 flow.collect(onEvent)

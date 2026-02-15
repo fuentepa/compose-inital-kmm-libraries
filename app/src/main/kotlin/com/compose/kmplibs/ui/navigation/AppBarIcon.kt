@@ -12,7 +12,11 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 
 @Composable
-fun AppBarIcon(imageVector: ImageVector, onClick: () -> Unit, contentDescription: String? = null) {
+fun AppBarIcon(
+    imageVector: ImageVector,
+    onClick: () -> Unit,
+    contentDescription: String? = null
+) {
     IconButton(
         onClick = onClick,
         modifier = Modifier
