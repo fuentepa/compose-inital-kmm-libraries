@@ -5,6 +5,7 @@ import com.compose.kmplibs.data.utils.catching
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Provided
 
 fun interface SetDeviceIdUseCase {
     suspend operator fun invoke(deviceId: Long)
@@ -12,7 +13,7 @@ fun interface SetDeviceIdUseCase {
 
 @Factory
 class SetDeviceIdUseCaseImpl(
-    private val repository: AppPreferencesRepository,
+    @Provided private val repository: AppPreferencesRepository,
     private val dispatcher: CoroutineDispatcher
 ) : SetDeviceIdUseCase {
 

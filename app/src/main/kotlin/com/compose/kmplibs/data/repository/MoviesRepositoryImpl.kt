@@ -1,14 +1,11 @@
 package com.compose.kmplibs.data.repository
 
-import com.compose.kmplibs.data.datasources.database.entity.toEntity
 import com.compose.kmplibs.data.model.Movie
 import com.compose.kmplibs.data.model.MovieDetail
-import com.compose.kmplibs.data.remote.response.MovieDetailResponse
 import com.compose.kmplibs.data.remote.response.MovieResponse
 import com.compose.kmplibs.data.remote.response.toModel
 import com.compose.kmplibs.data.source.LocalDataSource
 import com.compose.kmplibs.data.source.RemoteDataSource
-import kotlinx.coroutines.flow.first
 import org.koin.core.annotation.Single
 
 @Single

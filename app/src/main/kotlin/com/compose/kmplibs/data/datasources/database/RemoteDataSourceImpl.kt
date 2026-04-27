@@ -7,7 +7,7 @@ import com.compose.kmplibs.data.source.RemoteDataSource
 import com.compose.kmplibs.data.utils.catching
 import org.koin.core.annotation.Single
 
-@Single(createdAtStart = true)
+@Single(createdAtStart = true, binds = [RemoteDataSource::class])
 class RemoteDataSourceImpl(
     private val apiService: TMDBApiService
 ) : RemoteDataSource {

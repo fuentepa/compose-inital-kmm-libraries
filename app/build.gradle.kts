@@ -10,10 +10,22 @@ plugins {
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.koin.compiler)
+}
+
+koinCompiler {
+    // Helpful while wiring annotations/component scans.
+    userLogs = true
 }
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+ktorfit {
+    // Disable Ktorfit compiler plugin to avoid Kotlin compiler incompatibilities in this project.
+    // Ktorfit will still work via KSP (ksp(libs.ktorfit.ksp)).
+    compilerPluginVersion.set("-")
 }
 
 android {
@@ -160,6 +172,7 @@ dependencies {
 
     //koin
     implementation(platform(libs.koin.bom))
+    implementation(libs.koin.annotations)
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
@@ -167,11 +180,6 @@ dependencies {
 
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
-
-    //koin Annotations
-    implementation(platform(libs.koin.annotations.bom))
-    implementation(libs.koin.annotations)
-    ksp(libs.koin.ksp)
 
     //Ktorfit
     implementation(libs.ktorfit.lib)

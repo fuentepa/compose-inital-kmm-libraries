@@ -23,12 +23,17 @@ import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okio.Path.Companion.toPath
+import com.compose.kmplibs.data.di.DataModule
+import com.compose.kmplibs.data.di.DispatchersModule
+import com.compose.kmplibs.usecases.di.UseCasesModule
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
-@Module
+@Module(includes = [DispatchersModule::class, DataModule::class, UseCasesModule::class])
+@Configuration
 @ComponentScan("com.compose.kmplibs")
 class AppModule {
     

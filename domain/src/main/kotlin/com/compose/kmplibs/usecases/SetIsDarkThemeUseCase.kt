@@ -5,6 +5,7 @@ import com.compose.kmplibs.data.utils.catching
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Provided
 
 fun interface SetIsDarkThemeUseCase {
     suspend operator fun invoke(isDarkTheme: Boolean)
@@ -12,7 +13,7 @@ fun interface SetIsDarkThemeUseCase {
 
 @Factory
 class SetIsDarkThemeUseCaseImpl(
-    private val repository: AppPreferencesRepository,
+    @Provided private val repository: AppPreferencesRepository,
     private val dispatcher: CoroutineDispatcher
 ) : SetIsDarkThemeUseCase {
 

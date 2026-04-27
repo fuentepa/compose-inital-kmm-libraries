@@ -2,11 +2,13 @@ package com.compose.kmplibs.data.di
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
 @Module
+@Configuration
 class DispatchersModule {
 
     @Single(createdAtStart = true)
